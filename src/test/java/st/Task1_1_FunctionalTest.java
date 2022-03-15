@@ -133,12 +133,26 @@ public class Task1_1_FunctionalTest {
 	}**/
 	
 	/**
+	@Test //[Bug #9 - Easy, 1PT]
+	public void blankSpace() {
+		parser.parse(" ");
+	}**/
+	
+	/**
 	@Test //[Bug #10 - Easy, 1PT]
 	public void nullChar() {
 		parser.addOption(new Option("input", Type.CHARACTER));
 		parser.parse("--input=\0");
 		assertEquals(parser.getCharacter("input"), null);
 	}*/
+	
+	/**
+	@Test //[Bug #10 - Easy, 1PT]
+	public void charSpace() {
+		parser.addOption(new Option("input", Type.CHARACTER));
+		parser.parse("--input= ");
+		assertNotEquals(parser.getInteger("input"), " ");
+		}**/
 	
 	/**
 	@Test //[Bug #11 - Hard, 3PTS]
@@ -158,6 +172,14 @@ public class Task1_1_FunctionalTest {
 	}**/
 	
 	/**
+	@Test //[Bug #14 -  Hard, 3PTS]
+	public void newLine() {
+		parser.addOption(new Option("input", Type.STRING));
+		parser.parse("--input=\\n");
+		assertEquals(parser.getInteger("input"), "\\n");
+		}**/
+	
+	/**
 	@Test //[Bug #15 - Medium, 2PTS]
 	public void largeInteger() {
 		parser.addOption(new Option("input", Type.STRING));
@@ -173,6 +195,17 @@ public class Task1_1_FunctionalTest {
 	}**/
 	
 	/**
+	@Test //[Bug #18 - Easy, 1PT]
+	public void charSpace() {
+		parser.addOption(new Option("opt1", Type.STRING));
+		parser.addOption(new Option("opt2", Type.STRING));
+		parser.parse("opt1=OldText1 --opt2=OldText2");
+		parser.replace("opt1     opt2", "Old", "New");
+		assertEquals(parser.getString("opt1"), "OldText1");
+		assertEquals(parser.getString("opt2"), "OldText2");
+	}**/
+	
+	/**
 	@Test //[Bug #20 - Hard, 3PTS]
 	public void inputWithSpace() {
 		parser.addOption(new Option("input", Type.STRING));
@@ -180,10 +213,10 @@ public class Task1_1_FunctionalTest {
 		assertEquals(parser.getString("input"), "hello world");
 	}**/
 	
-	@Test //[Bug #15 - Medium, 2PTS]
-	public void newLine() {
-		parser.addOption(new Option("input", Type.STRING));
-		parser.parse("--input=\\n");
-		assertEquals(parser.getInteger("input"), "\\n");
-		}
+	@Test //[Bug #9 - Easy, 1PT]
+	public void blankSpace() {
+		parser.addOption(new Option("input", Type.CHARACTER));
+		parser.parse("--input=\"");
+		assertNotEquals(parser.getString("input"), "{D_QUOTE}");
+	}
 }
