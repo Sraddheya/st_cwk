@@ -45,6 +45,11 @@ public class Task1_1_FunctionalTest {
 	}
 	
 	@Test //[Bug #1 - Easy, 1PT]
+	public void sameOptionDifferentShortcut() {
+		parser.addOption(new Option("input", Type.INTEGER), "");
+	}
+	
+	@Test //[Bug #1 - Easy, 1PT]
 	public void optionNameCases() {
 		parser.addOption(new Option("output", Type.STRING));
 		assertFalse(parser.optionExists("OutPut"));
@@ -125,11 +130,8 @@ public class Task1_1_FunctionalTest {
 	/**
 	@Test //[Bug #8 - Medium, 2PTS]
 	public void sameOptionDifferentShortcut() {
-		parser.addOption(new Option("input", Type.INTEGER), "i");
-		assertTrue(parser.optionOrShortcutExists("i"));
-		parser.addOption(new Option("input", Type.INTEGER), "in");
-		assertFalse(parser.optionOrShortcutExists("i"));
-		assertTrue(parser.optionOrShortcutExists("in"));
+		parser.addOption(new Option("input", Type.INTEGER));
+		parser.addOption(new Option("input", Type.INTEGER));
 	}**/
 	
 	/**
@@ -154,11 +156,65 @@ public class Task1_1_FunctionalTest {
 		assertNotEquals(parser.getInteger("input"), " ");
 		}**/
 	
+	/** [Bug #11 - Hard, 3PTS]------------------------------------------------------------
+	@Test //
+	public void specialCharInOptionName1() {
+		parser.addOption(new Option("option!", Type.STRING));
+		assertFalse(parser.optionExists("option!"));
+	}
+	
+	@Test
+	public void specialCharInOptionName2() {
+		parser.addOption(new Option("option$", Type.STRING));
+		assertFalse(parser.optionExists("option$"));
+	}
+	
+	@Test
+	public void specialCharInOptionName3() {
+		parser.addOption(new Option("option%", Type.STRING));
+		assertFalse(parser.optionExists("option%"));
+	}
+	
+	@Test
+	public void specialCharInOptionName4() {
+		parser.addOption(new Option("option^", Type.STRING));
+		assertFalse(parser.optionExists("option^"));
+	}
+	
+	@Test
+	public void specialCharInOptionName5() {
+		parser.addOption(new Option("option&", Type.STRING));
+		assertFalse(parser.optionExists("option&"));
+	}
+	
+	@Test
+	public void specialCharInOptionName6() {
+		parser.addOption(new Option("option#", Type.STRING));
+		assertFalse(parser.optionExists("option#"));
+	}
+	
+	@Test
+	public void specialCharInOptionName7() {
+		parser.addOption(new Option("option@", Type.STRING));
+		assertFalse(parser.optionExists("option@"));
+	}**/
+	
 	/**
-	@Test //[Bug #11 - Hard, 3PTS]
-	public void optionNaming() {
-		parser.addOption(new Option("input%", Type.STRING));
-		assertFalse(parser.optionExists("input%"));
+	@Test (expected=IllegalArgumentException.class)
+	public void specialCharInOptionName8() {
+		parser.addOption(new Option("0option", Type.STRING));
+		assertFalse(parser.optionExists("0option"));
+	}**/
+	
+	/**
+	public void optionNaming1() {
+		parser.addOption(new Option("option", Type.STRING));
+		assertFalse(parser.optionExists("option*"));
+	}
+	
+	public void optionNaming2() {
+		parser.addOption(new Option("option", Type.STRING));
+		assertFalse(parser.optionExists("option*"));
 	}**/
 	
 	/**
@@ -167,7 +223,7 @@ public class Task1_1_FunctionalTest {
 		parser.addOption(new Option("input", Type.STRING), "i");
 		parser.addOption(new Option("option", Type.STRING), "input");
 		parser.parse("--input=something -input=something");
-		parser.replace("-input", "something", "nothing");
+		parser.replace("--input -input", "something", "nothing");
 		assertEquals(parser.getString("--input"), "nothing");
 	}**/
 	
@@ -186,6 +242,12 @@ public class Task1_1_FunctionalTest {
 		parser.parse("--input=9999999999");
 		assertEquals(parser.getInteger("input"), 9999999999L);
 		}**/
+	
+	/**
+	@Test //[Bug #16 - Medium, 2PTS]
+	public void nullType() {
+		parser.getString(null);
+	}**/
 	
 	/**
 	@Test //[Bug #17 - Hard, 3PTS]
@@ -213,10 +275,4 @@ public class Task1_1_FunctionalTest {
 		assertEquals(parser.getString("input"), "hello world");
 	}**/
 	
-	@Test //[Bug #9 - Easy, 1PT]
-	public void blankSpace() {
-		parser.addOption(new Option("input", Type.CHARACTER));
-		parser.parse("--input=\"");
-		assertNotEquals(parser.getString("input"), "{D_QUOTE}");
-	}
 }
