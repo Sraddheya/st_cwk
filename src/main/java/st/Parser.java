@@ -252,4 +252,8 @@ public class Parser {
 	    	return this.y;
 	    }
 	}
+	
+	public void addAll(String names, String shortcuts, String types) {
+		
+	}
 }
