@@ -14,6 +14,7 @@ public class Task3_TDD1 {
 		parser = new Parser();
 	}
 	
+	/**
 	//AddAll-------------------------------------------------------------------------------------------
 	@Test
 	public void testOptionExists() {
@@ -225,4 +226,5 @@ public class Task3_TDD1 {
 		parser.addAll("opt1-2", "o1-2", "something");
 		assertFalse(parser.optionExists("opt1"));
 	}
+	**/
 }

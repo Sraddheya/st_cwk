@@ -13,70 +13,15 @@ public class Task1_1_FunctionalTest {
 		parser = new Parser();
 	}
 	
-	
-	//SPECIFICATION 1.3------------------------------------------
-	
-	/**SPECIFICATION 1.3.1
-	 * Adding an option with the same name as an existing option will lead into overwriting the old type only
-       (as name is the same) in the already existing option object held in the options Map held internally
-       in the OptionMap class. 
-     * The old Option object is preserved in this case, so previously defined shortcuts will be able to access it
-     * The old Option object is preserved in this case, so its old value is also preserved.
-	 */
-	
-	
-	/**@Test
-	public void addOption() {
-		parser.addOption(new Option("output", Type.STRING), "o");
-		assertEquals(parser.getOption("output"), Type.STRING);
-		parser.addOption(new Option("output", Type.INTEGER), "p");
-		assertEquals(parser.getType("output"), Type.INTEGER);
-	}**/
-	
-	/**
+	//[Bug #1 - Easy, 1PT]----------------------------------------------------------------------
 	@Test (expected=IllegalArgumentException.class)
-	public void optionNamingChars() {
-		//Names
-		parser.addOption(new Option("1output", Type.STRING));
-		parser.addOption(new Option("*output", Type.STRING));
-		//Shortcuts
-		parser.addOption(new Option("output", Type.STRING), "1o");
-		parser.addOption(new Option("output", Type.STRING), "*o");
+	public void testNullShortcut() {
+		parser.addOption(new Option("option", Type.STRING), "");
 	}
 	
-	@Test //[Bug #1 - Easy, 1PT]
-	public void sameOptionDifferentShortcut() {
-		parser.addOption(new Option("input", Type.INTEGER), "");
-	}
-	
-	@Test //[Bug #1 - Easy, 1PT]
-	public void optionNameCases() {
-		parser.addOption(new Option("output", Type.STRING));
-		assertFalse(parser.optionExists("OutPut"));
-		parser.addOption(new Option("OutPut", Type.STRING));
-		assertTrue(parser.optionExists("OutPut"));
-	}
-	
-	@Test //[Bug #1 - Easy, 1PT]
-	public void optionShortcutCases() {
-		parser.addOption(new Option("output", Type.STRING), "out");
-		assertFalse(parser.shortcutExists("Out"));
-		parser.setShortcut("output", "Out");
-		assertTrue(parser.shortcutExists("Out"));
-	}
-	
-	@Test //[Bug #1 - Easy, 1PT] //(expected=IllegalArgumentException.class)
-	public void optionShortcutSameName() {
-		parser.addOption(new Option("output", Type.STRING), "o");
-		parser.addOption(new Option("o", Type.INTEGER));
-		parser.parse("--o hello");
-		//assertEquals(parser.getString("output"), "hello");
-	}**/
-
-	
-	/** [Bug #2 - Easy, 1PT]--------------------------------------------------------------------
+	//[Bug #2 - Easy, 1PT]--------------------------------------------------------------------
 	@Test 
-	public void booleanValues1() {
+	public void testBooleanFalse1() {
 		parser.addOption(new Option("option", Type.BOOLEAN));
 		parser.parse("--option=False");
 		assertFalse(parser.getBoolean("option"));
@@ -85,270 +30,154 @@ public class Task1_1_FunctionalTest {
 	}
 	
 	@Test 
-	public void booleanValues2() {
+	public void testBooleanFalse2() {
 		parser.addOption(new Option("option", Type.BOOLEAN));
 		parser.parse("--option=0");
 		assertFalse(parser.getBoolean("option"));
 	}
 	
 	@Test
-	public void booleanValues3() {
+	public void testBooleanFalse3() {
 		parser.addOption(new Option("option", Type.BOOLEAN), "o");
 		parser.parse("--option=");
 		assertFalse(parser.getBoolean("option"));
 		parser.parse("-o=");
 		assertFalse(parser.getBoolean("option"));
 	}
-	
+
+	//[Bug #3 - Medium, 2PTS] ----------------------------------------------------------------------
 	@Test
-	public void booleanValues4() {
-		parser.addOption(new Option("option", Type.BOOLEAN));
-		parser.parse("--option=True");
-		assertTrue(parser.getBoolean("option"));
-		parser.parse("--option=true");
-		assertTrue(parser.getBoolean("option"));
-	}
-	
-	@Test
-	public void booleanValues5() {
-		parser.addOption(new Option("option", Type.BOOLEAN));
-		parser.parse("--option=1");
-		assertTrue(parser.getBoolean("option"));
-	}
-	
-	@Test
-	public void booleanValues6() {
-		parser.addOption(new Option("option", Type.BOOLEAN));
-		parser.parse("--option=anything");
-		assertTrue(parser.getBoolean("option"));
-	}
-	
-	@Test
-	public void booleanValues7() {
-		parser.addOption(new Option("option", Type.BOOLEAN));
-		parser.parse("--option=10");
-		assertTrue(parser.getBoolean("option"));
-	}**/
-	
-	/** [Bug #3 - Medium, 2PTS] ----------------------------------------------------------------------
-	@Test
-	public void getIntegerTest1() {
+	public void testGetInteger1() {
 		parser.addOption(new Option("option", Type.BOOLEAN));
 		parser.parse("--option=something");
 		assertEquals(parser.getInteger("option"), 1);
-		}
+	}
 	
 	@Test
-	public void getIntegerTest2() {
+	public void testGetInteger2() {
 		parser.addOption(new Option("option", Type.BOOLEAN));
 		parser.parse("--option=false");
 		assertEquals(parser.getInteger("option"), 0);
-		}**/
+	}
 	
-	/** [Bug #4 - Medium, 2PTS]-----------------------------------------------------------------------
+	//[Bug #4 - Medium, 2PTS]-----------------------------------------------------------------------
 	@Test
-	public void shortcutLength() {
+	public void testShortcutLength() {
 		parser.addOption(new Option("option", Type.STRING), "oooooooooooooooooooooooooooooooooooooooooooooooooooo");
-		assertTrue(parser.optionOrShortcutExists("oooooooooooooooooooooooooooooooooooooooooooooooooooo"));
-	}**/
+		assertTrue(parser.shortcutExists("oooooooooooooooooooooooooooooooooooooooooooooooooooo"));
+	}
 	
-	/** [Bug #5 - Medium, 2PTS]-----------------------------------------------------------------------
+	//[Bug #5 - Medium, 2PTS]-----------------------------------------------------------------------
 	@Test
-	public void negativeInteger() {
-		parser.addOption(new Option("input", Type.INTEGER));
-		parser.parse("--input=-1");
-		assertEquals(parser.getInteger("input"), -1);
-	}**/
+	public void testNegativeInteger() {
+		parser.addOption(new Option("option", Type.INTEGER));
+		parser.parse("--option=-1");
+		assertEquals(parser.getInteger("option"), -1);
+	}
 	
-	/** [Bug #8 - Medium, 2PTS]-----------------------------------------------------------------------
+	//Bug #7 - Hard, 3PTS]-------------------------------------------------------------------------
 	@Test 
-	public void optionExists() {
-		parser.addOption(new Option("option", Type.INTEGER));
-		parser.addOption(new Option("option", Type.INTEGER));
-	}**/
-	
-	/** [Bug #9 - Easy, 1PT]--------------------------------------------------------------------------
-	@Test
-	public void blankSpace() {
-		parser.parse(" ");
-	}**/
-	
-	/** [Bug #10 - Easy, 1PT]-------------------------------------------------------------------------
-	@Test
-	public void nullChar() {
-		parser.addOption(new Option("option", Type.CHARACTER));
-		parser.parse("--option=\0");
-		assertEquals(parser.getCharacter("option"), null);
+	public void testAllNumericValues() {
+		parser.addOption(new Option("option", Type.STRING));
+		parser.parse("--option=1234567890");
+		assertEquals(parser.getInteger("option"), "1234567890");
 	}
 	
-	@Test
-	public void whiteSpaceChar() {
-		parser.addOption(new Option("option", Type.CHARACTER));
-		parser.parse("--option= ");
-		assertEquals(parser.getInteger("option"), null);
-		}**/
-	
-	/** [Bug #11 - Hard, 3PTS]------------------------------------------------------------------------
-	@Test //
-	public void specialCharInOptionName1() {
-		parser.addOption(new Option("option!", Type.STRING));
-		assertFalse(parser.optionExists("option!"));
-	}
-	
-	@Test
-	public void specialCharInOptionName2() {
-		parser.addOption(new Option("option$", Type.STRING));
-		assertFalse(parser.optionExists("option$"));
-	}
-	
-	@Test
-	public void specialCharInOptionName3() {
-		parser.addOption(new Option("option%", Type.STRING));
-		assertFalse(parser.optionExists("option%"));
-	}
-	
-	@Test
-	public void specialCharInOptionName4() {
-		parser.addOption(new Option("option^", Type.STRING));
-		assertFalse(parser.optionExists("option^"));
-	}
-	
-	@Test
-	public void specialCharInOptionName5() {
-		parser.addOption(new Option("option&", Type.STRING));
-		assertFalse(parser.optionExists("option&"));
-	}
-	
-	@Test
-	public void specialCharInOptionName6() {
-		parser.addOption(new Option("option#", Type.STRING));
-		assertFalse(parser.optionExists("option#"));
-	}
-	
-	@Test
-	public void specialCharInOptionName7() {
-		parser.addOption(new Option("option@", Type.STRING));
-		assertFalse(parser.optionExists("option@"));
-	}**/
-	
-	/**
+	//[Bug #8 - Medium, 2PTS]-----------------------------------------------------------------------
 	@Test (expected=IllegalArgumentException.class)
-	public void specialCharInOptionName8() {
-		parser.addOption(new Option("0option", Type.STRING));
-		assertFalse(parser.optionExists("0option"));
-	}**/
-	
-	/**
-	public void optionNaming1() {
-		parser.addOption(new Option("option", Type.STRING));
-		assertFalse(parser.optionExists("option*"));
+	public void testSameNameOption() {
+		parser.addOption(new Option("option", Type.INTEGER));
+		parser.addOption(new Option("option", Type.INTEGER));
 	}
 	
-	public void optionNaming2() {
-		parser.addOption(new Option("option", Type.STRING));
-		assertFalse(parser.optionExists("option*"));
-	}**/
-	
-	/** [Bug #12 - Hard, 3PTS]-----------------------------------------------------------------------
-	@Test
-	public void replaceTest1() {
-		parser.addOption(new Option("option", Type.STRING));
-		parser.parse("--option=old");
-		parser.replace("--option", "old", "new");
-		assertEquals(parser.getString("option"), "new");
+	//[Bug #9 - Easy, 1PT]--------------------------------------------------------------------------
+	@Test (expected=IllegalArgumentException.class)
+	public void testBlankSpaceParse() {
+		parser.parse(" ");
 	}
 	
+	//[Bug #10 - Easy, 1PT]-------------------------------------------------------------------------
 	@Test
-	public void replaceTest2() {
-		parser.addOption(new Option("option", Type.STRING));
-		parser.parse("--option=old");
-		parser.replace("option", "old", "new");
-		assertEquals(parser.getString("option"), "new");
+	public void testNoChar() {
+		parser.addOption(new Option("option", Type.CHARACTER));
+		parser.parse("--option=");
+		assertEquals(parser.getCharacter("option"), "/0");
 	}
 	
+	//[Bug #11 - Hard, 3PTS]------------------------------------------------------------------------
+	@Test (expected=IllegalArgumentException.class)
+	public void testSpecialCharInOption() {
+		parser.addOption(new Option("option#", Type.STRING));
+	}
+	
+	//[Bug #12 - Hard, 3PTS]-----------------------------------------------------------------------
 	@Test
-	public void replaceTest3() {
+	public void testShprtcutInReplace() {
 		parser.addOption(new Option("option", Type.STRING), "o");
 		parser.parse("-o=old");
 		parser.replace("-o", "old", "new");
 		assertEquals(parser.getString("option"), "new");
 	}
 	
+	//[Bug #13 - Medium, 2PTS]------------------------------------------------------------------------
 	@Test
-	public void replaceTest5() {
-		parser.addOption(new Option("option", Type.STRING), "o");
-		parser.parse("-o=old");
-		parser.replace("o", "old", "new");
-		assertEquals(parser.getString("option"), "new");
-	}**/
+	public void testQuotesEquals() {
+		parser.addOption(new Option("option", Type.STRING));
+		parser.parse("--option='value=\"abc\"'");
+		assertEquals(parser.getString("option"), "value=\"abc\"");
+	}
 	
-	/**[Bug #14 -  Hard, 3PTS]------------------------------------------------------------------------
+	//[Bug #14 -  Hard, 3PTS]------------------------------------------------------------------------
 	@Test 
-	public void newLineChar() {
+	public void testNewLineChar() {
 		parser.addOption(new Option("option", Type.CHARACTER));
 		parser.parse("--option=\\n");
-		assertEquals(parser.getInteger("option"), "\\n");
-		}**/
+		assertEquals(parser.getCharacter("option"), "\\n");
+	}
 	
-	/**[Bug #15 - Medium, 2PTS]-----------------------------------------------------------------------
+	//[Bug #15 - Medium, 2PTS]-----------------------------------------------------------------------
 	@Test
-	public void largeInteger() {
+	public void testLargeInteger() {
 		parser.addOption(new Option("option", Type.STRING));
 		parser.parse("--option=9999999999");
 		assertEquals(parser.getInteger("option"), 9999999999L);
-		}**/
-	
-	/** [Bug #16 - Medium, 2PTS]
-	@Test
-	public void nullOption() {
-		parser.getString(null);
-	}**/
-	
-	/**
-	@Test //[Bug #17 - Hard, 3PTS]
-	public void optionLength() {
-		parser.addOption(new Option("iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii", Type.STRING));
-		assertTrue(parser.optionOrShortcutExists("iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii"));
-	}**/
-	
-	/**
-	@Test //[Bug #18 - Easy, 1PT]
-	public void charSpace() {
-		parser.addOption(new Option("opt1", Type.STRING));
-		parser.addOption(new Option("opt2", Type.STRING));
-		parser.parse("opt1=OldText1 --opt2=OldText2");
-		parser.replace("opt1     opt2", "Old", "New");
-		assertEquals(parser.getString("opt1"), "OldText1");
-		assertEquals(parser.getString("opt2"), "OldText2");
-	}**/
-	
-	/**
-	@Test //[Bug #20 - Hard, 3PTS]
-	public void inputWithSpace() {
-		parser.addOption(new Option("input", Type.STRING));
-		parser.parse("--input=hello world");
-		assertEquals(parser.getString("input"), "hello world");
-	}**/
-	
-	/**
-	@Test
-	public void caseSensitiveNames() {
-		parser.addOption(new Option("option", Type.STRING), "o");
-		parser.addOption(new Option("Option", Type.STRING), "O");
-		assertTrue(parser.optionOrShortcutExists("option"));
-		assertTrue(parser.optionOrShortcutExists("Option"));
-		assertTrue(parser.optionOrShortcutExists("o"));
-		assertTrue(parser.optionOrShortcutExists("O"));
 	}
 	
+	//[Bug #16 - Medium, 2PTS]-----------------------------------------------------------------------
+	@Test (expected=IllegalArgumentException.class)
+	public void testNullParse() {
+		parser.getString(null);
+	}
+	
+	//[Bug #17 - Hard, 3PTS]-------------------------------------------------------------------------
 	@Test
-	public void shortcutOptionSameName() {
-		parser.addOption(new Option("o", Type.STRING));
-		parser.addOption(new Option("option", Type.STRING), "o");
-		parser.parse("--o=hello");
-		parser.parse("-o=hello");
-		assertEquals(parser.getString("o"), "hello");
-		assertEquals(parser.getString("option"), "hello");
-	}**/
+	public void testOptionLength() {
+		parser.addOption(new Option("ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo", Type.STRING));
+		assertTrue(parser.optionExists("ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo"));
+	}
+	
+	@Test //[Bug #18 - Easy, 1PT]--------------------------------------------------------------------
+	public void testSpaceInReplace() {
+		parser.addOption(new Option("opt1", Type.STRING));
+		parser.addOption(new Option("opt2", Type.STRING));
+		parser.parse("--opt1=OldText1 --opt2=OldText2");
+		parser.replace("opt1     opt2", "Old", "New");
+		assertNotEquals(parser.getString("opt1"), "OldText1");
+		assertNotEquals(parser.getString("opt2"), "OldText2");
+	}
+	
+	//[Bug #19 - Medium, 2PTS]-----------------------------------------------------------------------
+	@Test (expected=IllegalArgumentException.class)
+	public void testDoubleQuoteDash() {
+		parser.addOption(new Option("option", Type.STRING));
+		parser.parse("--option=\"hello-world\"");
+	}
+	
+	//[Bug #20 - Hard, 3PTS]-------------------------------------------------------------------------
+	@Test (expected=IllegalArgumentException.class)
+	public void testValueWithSpace() {
+		parser.addOption(new Option("option", Type.STRING));
+		parser.parse("--option=hello world");
+	}
 	
 }
