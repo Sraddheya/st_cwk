@@ -13,25 +13,24 @@ public class Task3_TDD1 {
 	public void setUp() {
 		parser = new Parser();
 	}
-	
-	/**
-	//AddAll-------------------------------------------------------------------------------------------
+
+	//AddAll SPEC 1 AND 4-------------------------------------------------------------------------------------------
 	@Test
 	public void testOptionExists() {
-		parser.addAll("opt1 opt2 opt3 opt4", "o1 o2 o3 o4", "String Ineteger Boolean Character");
-		assertTrue(parser.optionOrShortcutExists("opt1"));
-		assertTrue(parser.optionOrShortcutExists("opt2"));
-		assertTrue(parser.optionOrShortcutExists("opt3"));
-		assertTrue(parser.optionOrShortcutExists("opt4"));
+		parser.addAll("opt1 opt2 opt3 opt4", "String Ineteger Boolean Character");
+		assertTrue(parser.optionExists("opt1"));
+		assertTrue(parser.optionExists("opt2"));
+		assertTrue(parser.optionExists("opt3"));
+		assertTrue(parser.optionExists("opt4"));
 	}
 	
 	@Test
 	public void testShortcutExists() {
 		parser.addAll("opt1 opt2 opt3 opt4", "o1 o2 o3 o4", "String Ineteger Boolean Character");
-		assertTrue(parser.optionOrShortcutExists("o1"));
-		assertTrue(parser.optionOrShortcutExists("o2"));
-		assertTrue(parser.optionOrShortcutExists("o3"));
-		assertTrue(parser.optionOrShortcutExists("o4"));
+		assertTrue(parser.shortcutExists("o1"));
+		assertTrue(parser.shortcutExists("o2"));
+		assertTrue(parser.shortcutExists("o3"));
+		assertTrue(parser.shortcutExists("o4"));
 	}
 	
 	@Test
@@ -43,67 +42,64 @@ public class Task3_TDD1 {
 		assertEquals(parser.getCharacter("opt4"), '\0');
 	}
 	
+	//AddAll SPEC 2 AND 3-------------------------------------------------------------------------------------------
 	@Test
-	public void testNoSpaceOption() {
-		parser.addAll("opt1opt2", "String String");
-		assertFalse(parser.optionOrShortcutExists("opt1"));
-		assertFalse(parser.optionOrShortcutExists("opt2"));
-		assertTrue(parser.optionOrShortcutExists("opt1opt2"));
+	public void testOptionSpace() {
+		parser.addAll("opt1    opt2", "o1    o2", "String     String");
+		assertTrue(parser.optionExists("opt1"));
+		assertTrue(parser.optionExists("opt2"));
 	}
 	
 	@Test
-	public void testNoSpaceShortcut() {
-		parser.addAll("opt1 opt2", "o1o2", "String String");
-		assertTrue(parser.optionOrShortcutExists("opt1"));
-		assertTrue(parser.optionOrShortcutExists("opt2"));
-		assertTrue(parser.optionOrShortcutExists("o1o2"));
-		assertFalse(parser.optionOrShortcutExists("o2"));
+	public void testShortcutSpace() {
+		parser.addAll("opt1    opt2", "o1    o2", "String     String");
+		assertTrue(parser.shortcutExists("o1"));
+		assertTrue(parser.shortcutExists("o2"));
 	}
 	
 	@Test
-	public void testExtraSpaceOption() {
-		parser.addAll("opt1     opt2", "String String");
-		assertTrue(parser.optionOrShortcutExists("opt1"));
-		assertTrue(parser.optionOrShortcutExists("opt2"));
+	public void testTypeSpace() {
+		parser.addAll("opt1 opt2 opt3 opt4", "o1 o2 o3 o4", "String      Ineteger      Boolean      Character");
+		assertEquals(parser.getString("opt1"), "");
+		assertEquals(parser.getInteger("opt2"), 0);
+		assertEquals(parser.getBoolean("opt3"), false);
+		assertEquals(parser.getCharacter("opt4"), '\0');
 	}
 	
-	@Test
-	public void testExtraSpaceShortcut() {
-		parser.addAll("opt1 opt2", "o1     o2", "String String");
-		assertTrue(parser.optionOrShortcutExists("o1"));
-		assertTrue(parser.optionOrShortcutExists("o2"));
-	}
-	
+	//AddAll SPEC 5-------------------------------------------------------------------------------------------
 	@Test
 	public void testMoreOptionsThanShortcuts() {
 		parser.addAll("opt1 opt2", "o1", "String String");
-		assertTrue(parser.optionOrShortcutExists("opt1"));
-		assertTrue(parser.optionOrShortcutExists("opt2"));
-		assertTrue(parser.optionOrShortcutExists("o1"));
+		assertTrue(parser.optionExists("opt1"));
+		assertTrue(parser.optionExists("opt2"));
+		assertTrue(parser.shortcutExists("o1"));
 	}
 	
+	//AddAll SPEC 6-------------------------------------------------------------------------------------------
 	@Test
 	public void testLessOptionsThanShortcuts() {
 		parser.addAll("opt1", "o1 o2", "String");
-		assertTrue(parser.optionOrShortcutExists("opt1"));
-		assertTrue(parser.optionOrShortcutExists("o1"));
-		assertFalse(parser.optionOrShortcutExists("opt2"));
-		assertFalse(parser.optionOrShortcutExists("o2"));
+		assertTrue(parser.optionExists("opt1"));
+		assertTrue(parser.shortcutExists("o1"));
+		assertFalse(parser.shortcutExists("o2"));
 	}
 	
+	@Test
+	public void testLessOptionsThanTypes() {
+		parser.addAll("opt1", "o1", "String Integer Boolean");
+		assertTrue(parser.optionExists("opt1"));
+		assertTrue(parser.shortcutExists("o1"));
+		assertEquals(parser.getString("opt1"), "");
+	}
+	
+	//AddAll SPEC 7-------------------------------------------------------------------------------------------
+	/**
 	@Test
 	public void testMoreOptionsThanTypes() {
 		parser.addAll("opt1 opt2 opt3", "String Integer");
 		assertEquals(parser.getString("opt1"), "");
 		assertEquals(parser.getInteger("opt2"), 0);
 		assertEquals(parser.getInteger("opt3"), 0);
-	}
-	
-	@Test
-	public void testLessOptionsThanTypes() {
-		parser.addAll("opt1", "String Integer String");
-		assertTrue(parser.optionOrShortcutExists("opt1"));
-		assertEquals(parser.getString("opt1"), "");
 	}
 	
 	@Test (expected=IllegalArgumentException.class)
@@ -225,6 +221,6 @@ public class Task3_TDD1 {
 	public void invalidType() {
 		parser.addAll("opt1-2", "o1-2", "something");
 		assertFalse(parser.optionExists("opt1"));
-	}
-	**/
+	}**/
+	
 }
