@@ -93,6 +93,14 @@ public class Task3_TDD1 {
 	}
 	
 	//AddAll SPEC 7-------------------------------------------------------------------------------------------
+	@Test
+	public void testMoreOptionsThanTypes() {
+		parser.addAll("opt1 opt2 opt3", "o1 o2 o3", "String Integer");
+		assertEquals(parser.getString("opt1"), "");
+		assertEquals(parser.getInteger("opt2"), 0);
+		assertEquals(parser.getInteger("opt3"), 0);
+	}
+	
 	/**
 	@Test
 	public void testMoreOptionsThanTypes() {
