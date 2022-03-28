@@ -253,6 +253,8 @@ public class Parser {
 	    }
 	}
 	
+	//BASIC ADDALL----------------------------------------------------------
+	/**
 	public void addAll(String options, String shortcuts, String types) {
 		String[] optionsList = options.split("\\s+");
 		String[] shortcutsList = shortcuts.split("\\s+");
@@ -267,7 +269,7 @@ public class Parser {
 		String[] typesList = types.split("\\s+");
 		
 		addAllHelper(optionsList, shortcutsList, typesList);
-	}
+	}**/
 	
 	private void addAllHelper(String[] options, String[] shortcuts, String[] types) {
 		int j;
@@ -302,5 +304,59 @@ public class Parser {
 		} else {
 			return Type.NOTYPE;
 		}
+	}
+	
+	public void addAll(String options, String shortcuts, String types) {
+		String[] oldOps = options.split("\\s+");
+		String[] oldShorts= shortcuts.split("\\s+");
+		String[] oldTypes = types.split("\\s+");
+		
+		List<Option> newOps = new ArrayList<Option>();
+		List<String> newShorts = new ArrayList<String>();
+		
+		int typeIndex;
+
+		for (int i = 0; i < oldOps.length; ++i) {
+			
+			if (oldTypes.length - 1 < i) {
+				typeIndex = oldTypes.length - 1;
+			} else {
+				typeIndex = i;
+			}
+			
+			newOps.addAll(ungroupOption(oldOps[i], oldTypes[typeIndex]));
+			newShorts.addAll(ungroupShort(oldShorts[i]));
+		}
+
+		for (int j = 0; j < newOps.size(); ++j) {
+			
+			if (newShorts.size() - 1 < j) {
+				optionMap.store(newOps.get(j), newShorts.get(j));
+			} else {
+				optionMap.store(newOps.get(j), "");
+			}
+		}
+	}
+	
+	private List<Option> ungroupOption(String options, String type) {
+		List<Option> newOps = new ArrayList<Option>();
+		
+		if (options.contains("-")) {
+			String[] op = options.split("-");
+			int nameLen = op[0].length()-1;
+		
+			String name = op[0].substring(0, nameLen);
+			char start = op[0].charAt(nameLen+1);
+			String end = op[1];
+		
+			boolean sameRange = isSameRange()
+		}
+		
+		return newOps;
+	}
+	
+	private List<String> ungroupShort(String shortcuts) {
+		List<String> newShorts = new ArrayList<String>();
+		return newShorts;
 	}
 }
