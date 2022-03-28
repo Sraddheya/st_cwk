@@ -253,7 +253,54 @@ public class Parser {
 	    }
 	}
 	
-	public void addAll(String names, String shortcuts, String types) {
+	public void addAll(String options, String shortcuts, String types) {
+		String[] optionsList = options.split("\\s+");
+		String[] shortcutsList = shortcuts.split("\\s+");
+		String[] typesList = types.split("\\s+");
 		
+		addAllHelper(optionsList, shortcutsList, typesList);
+	}
+	
+	public void addAll(String options, String types) {
+		String[] optionsList = options.split("\\s+");
+		String[] shortcutsList = new String[0];
+		String[] typesList = types.split("\\s+");
+		
+		addAllHelper(optionsList, shortcutsList, typesList);
+	}
+	
+	private void addAllHelper(String[] options, String[] shortcuts, String[] types) {
+		int j;
+		
+		for (int i = 0; i < options.length; ++i) {
+			if (types.length - 1 < i) {
+				j = types.length - 1;
+			} else {
+				j = i;
+			}
+			
+			Type type = stringToType(types[j]);
+			Option op = new Option(options[i], type);
+			
+			if (shortcuts.length - 1 < i) {
+				optionMap.store(op, "");
+			} else {
+				optionMap.store(op, shortcuts[i]);
+			}
+		}
+	}
+	
+	private Type stringToType(String type) {
+		if (type.equals("String")){
+			return Type.STRING;
+		} else if (type.equals("Integer")) {
+			return Type.INTEGER;
+		} else if (type.equals("Boolean")) {
+			return Type.BOOLEAN;
+		} else if (type.equals("Character")) {
+			return Type.CHARACTER;
+		} else {
+			return Type.NOTYPE;
+		}
 	}
 }

@@ -14,20 +14,20 @@ public class Task3_TDD1 {
 		parser = new Parser();
 	}
 
-	/**
+	
 	//AddAll SPEC 1 AND 4-------------------------------------------------------------------------------------------
 	@Test
 	public void testOptionExists() {
-		parser.addAll("opt1 opt2 opt3 opt4", "String Ineteger Boolean Character");
+		parser.addAll("opt1 opt2 opt3 opt4", "String Integer Boolean Character");
 		assertTrue(parser.optionExists("opt1"));
 		assertTrue(parser.optionExists("opt2"));
 		assertTrue(parser.optionExists("opt3"));
 		assertTrue(parser.optionExists("opt4"));
 	}
-	
+	/**
 	@Test
 	public void testShortcutExists() {
-		parser.addAll("opt1 opt2 opt3 opt4", "o1 o2 o3 o4", "String Ineteger Boolean Character");
+		parser.addAll("opt1 opt2 opt3 opt4", "o1 o2 o3 o4", "String Integer Boolean Character");
 		assertTrue(parser.shortcutExists("o1"));
 		assertTrue(parser.shortcutExists("o2"));
 		assertTrue(parser.shortcutExists("o3"));
@@ -36,7 +36,7 @@ public class Task3_TDD1 {
 	
 	@Test
 	public void testCorrectType() {
-		parser.addAll("opt1 opt2 opt3 opt4", "o1 o2 o3 o4", "String Ineteger Boolean Character");
+		parser.addAll("opt1 opt2 opt3 opt4", "o1 o2 o3 o4", "String Integer Boolean Character");
 		assertEquals(parser.getString("opt1"), "");
 		assertEquals(parser.getInteger("opt2"), 0);
 		assertEquals(parser.getBoolean("opt3"), false);
@@ -60,7 +60,7 @@ public class Task3_TDD1 {
 	
 	@Test
 	public void testTypeSpace() {
-		parser.addAll("opt1 opt2 opt3 opt4", "o1 o2 o3 o4", "String      Ineteger      Boolean      Character");
+		parser.addAll("opt1 opt2 opt3 opt4", "o1 o2 o3 o4", "String      Integer      Boolean      Character");
 		assertEquals(parser.getString("opt1"), "");
 		assertEquals(parser.getInteger("opt2"), 0);
 		assertEquals(parser.getBoolean("opt3"), false);
