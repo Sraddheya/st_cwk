@@ -14,6 +14,7 @@ public class Task3_TDD1 {
 		parser = new Parser();
 	}
 
+	/**
 	//AddAll SPEC 1 AND 4-------------------------------------------------------------------------------------------
 	@Test
 	public void testOptionExists() {
@@ -275,4 +276,5 @@ public class Task3_TDD1 {
 	public void testInvalidType() {
 		parser.addAll("opt1-3", "o1-3", "NoType String");
 	}
+	**/
 }

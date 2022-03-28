@@ -69,13 +69,21 @@ public class Task1_1_FunctionalTest {
 	}
 	
 	//[Bug #5 - Medium, 2PTS]-----------------------------------------------------------------------
-	@Test
+	@Test //(expected=ArithmeticException.class)
 	public void testNegativeInteger() {
 		parser.addOption(new Option("option", Type.INTEGER));
 		parser.parse("--option=-1");
 		assertEquals(parser.getInteger("option"), -1);
 	}
 	
+	//[Bug #6 - Easy, 1PT]-----------------------------------------------------------------------
+	@Test 
+	public void testEqualOptions() {
+		Option opt1 = new Option("opt1", Type.STRING);
+		Option opt2 = new Option("opt2", Type.STRING);
+		assertFalse(opt1.equals(opt2));
+	}
+		
 	//Bug #7 - Hard, 3PTS]-------------------------------------------------------------------------
 	@Test 
 	public void testAllNumericValues() {
@@ -169,16 +177,18 @@ public class Task1_1_FunctionalTest {
 	}
 	
 	//[Bug #19 - Medium, 2PTS]-----------------------------------------------------------------------
-	@Test (expected=IllegalArgumentException.class)
+	@Test
 	public void testDoubleQuoteDash() {
-		parser.addOption(new Option("option", Type.STRING));
-		parser.parse("--option=\"hello-world\"");
+		parser.addOption(new Option("option", Type.STRING), "o");
+		parser.parse("--option=\"hello-o=world\"");
+		assertEquals(parser.getString("option"), "hello-o=world");
 	}
 	
 	//[Bug #20 - Hard, 3PTS]-------------------------------------------------------------------------
-	@Test (expected=IllegalArgumentException.class)
+	@Test
 	public void testValueWithSpace() {
 		parser.addOption(new Option("option", Type.STRING));
 		parser.parse("--option=hello world");
+		assertEquals(parser.getString("option"), "hello");
 	}
 }
