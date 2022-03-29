@@ -253,7 +253,41 @@ public class Parser {
 	    }
 	}
 	
-	//BASIC ADDALL----------------------------------------------------------
+	//HELPERS-------------------------------------------------------------------------------------------------
+	private Type stringToType(String type) {
+		if (type.equals("String")){
+			return Type.STRING;
+		} else if (type.equals("Integer")) {
+			return Type.INTEGER;
+		} else if (type.equals("Boolean")) {
+			return Type.BOOLEAN;
+		} else if (type.equals("Character")) {
+			return Type.CHARACTER;
+		} else {
+			return Type.NOTYPE;
+		}
+	}
+	
+	private boolean isSameRange(String startStr, String endStr) {
+		if (endStr.length()!=1) {
+			return false;
+		}
+		
+		char start = startStr.charAt(0);
+		char end = endStr.charAt(0);
+		
+		if (Character.isDigit(start) && Character.isDigit(end)) {
+			return true;
+		} else if (Character.isUpperCase(start) && Character.isUpperCase(end)) {
+			return true;
+		} else if (Character.isLowerCase(start) && Character.isLowerCase(end)) {
+			return true;
+		}
+		return false;
+	}
+
+	
+	//BASIC ADDALL-------------------------------------------------------------------------------------------
 	/**
 	public void addAll(String options, String shortcuts, String types) {
 		String[] optionsList = options.split("\\s+");
@@ -269,7 +303,7 @@ public class Parser {
 		String[] typesList = types.split("\\s+");
 		
 		addAllHelper(optionsList, shortcutsList, typesList);
-	}**/
+	}
 	
 	private void addAllHelper(String[] options, String[] shortcuts, String[] types) {
 		int j;
@@ -292,19 +326,21 @@ public class Parser {
 		}
 	}
 	
-	private Type stringToType(String type) {
-		if (type.equals("String")){
-			return Type.STRING;
-		} else if (type.equals("Integer")) {
-			return Type.INTEGER;
-		} else if (type.equals("Boolean")) {
-			return Type.BOOLEAN;
-		} else if (type.equals("Character")) {
-			return Type.CHARACTER;
-		} else {
-			return Type.NOTYPE;
+	private List<Option> ungroupInt(String name, int start, int end, String typeStr){
+		List<Option> newOps = new ArrayList<Option>();
+		Type type = stringToType(typeStr);
+		String newName;
+		
+		for (int i = start; i<= end; i++) {
+			newName = name + (char) i;
+			Option op = new Option(newName, type);
+			newOps.add(op);
 		}
+		
+		return newOps;
 	}
+	
+	**/
 	
 	public void addAll(String options, String shortcuts, String types) {
 		String[] oldOps = options.split("\\s+");
@@ -316,6 +352,7 @@ public class Parser {
 		
 		int typeIndex;
 
+		//New options
 		for (int i = 0; i < oldOps.length; ++i) {
 			
 			if (oldTypes.length - 1 < i) {
@@ -324,10 +361,25 @@ public class Parser {
 				typeIndex = i;
 			}
 			
-			newOps.addAll(ungroupOption(oldOps[i], oldTypes[typeIndex]));
-			newShorts.addAll(ungroupShort(oldShorts[i]));
+			Type type = stringToType(oldTypes[typeIndex]);
+			
+			if (oldOps[i].contains("-")) {
+				newOps.addAll(ungroupOption(oldOps[i], type));
+			} else {
+				newOps.add(new Option(oldOps[i], type));
+			}
+		}
+		
+		//New Shortcuts
+		for (int j = 0; j < oldShorts.length; j++) {
+			if (oldShorts[j].contains("-")) {
+				newShorts.addAll(ungroupShort(oldShorts[j]));
+			} else {
+				newShorts.add(oldShorts[j]);
+			}
 		}
 
+		//Storing
 		for (int j = 0; j < newOps.size(); ++j) {
 			
 			if (newShorts.size() - 1 < j) {
@@ -338,18 +390,27 @@ public class Parser {
 		}
 	}
 	
-	private List<Option> ungroupOption(String options, String type) {
+	private List<Option> ungroupOption(String options, Type type) {
 		List<Option> newOps = new ArrayList<Option>();
 		
-		if (options.contains("-")) {
-			String[] op = options.split("-");
-			int nameLen = op[0].length()-1;
+		String[] arr = options.split("-");
+		int nameLen = arr[0].length()-1;
+	
+		String name = arr[0].substring(0, nameLen);
+		String startStr = arr[0].substring(nameLen, nameLen+1);
+		String endStr = arr[1];
 		
-			String name = op[0].substring(0, nameLen);
-			char start = op[0].charAt(nameLen+1);
-			String end = op[1];
-		
-			boolean sameRange = isSameRange()
+		if (isSameRange(startStr, endStr)) {
+			char start = startStr.charAt(0);
+			char end = endStr.charAt(0);
+
+			String newName;
+			
+			for (int i = start; i<= end; i++) {
+				newName = name + (char) i;
+				Option op = new Option(newName, type);
+				newOps.add(op);
+			}
 		}
 		
 		return newOps;
@@ -357,6 +418,28 @@ public class Parser {
 	
 	private List<String> ungroupShort(String shortcuts) {
 		List<String> newShorts = new ArrayList<String>();
+		
+		String[] arr = shortcuts.split("-");
+		int nameLen = arr[0].length()-1;
+	
+		String name = arr[0].substring(0, nameLen);
+		String startStr = arr[0].substring(nameLen, nameLen+1);
+		String endStr = arr[1];
+		
+		if (isSameRange(startStr, endStr)) {
+			char start = startStr.charAt(0);
+			char end = endStr.charAt(0);
+
+			String newName;
+			
+			for (int i = start; i<= end; i++) {
+				newName = name + (char) i;
+				newShorts.add(newName);
+			}
+		}
+		
 		return newShorts;
 	}
+	
+	
 }
