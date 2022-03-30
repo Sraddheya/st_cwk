@@ -14,7 +14,7 @@ public class Task3_TDD1 {
 		parser = new Parser();
 	}
 
-	
+	/**
 	//AddAll SPEC 1 AND 4-------------------------------------------------------------------------------------------
 	@Test
 	public void testOptionExists() {
@@ -24,7 +24,7 @@ public class Task3_TDD1 {
 		assertTrue(parser.optionExists("opt3"));
 		assertTrue(parser.optionExists("opt4"));
 	}
-	/**
+	**/
 	@Test
 	public void testShortcutExists() {
 		parser.addAll("opt1 opt2 opt3 opt4", "o1 o2 o3 o4", "String Integer Boolean Character");
@@ -33,7 +33,7 @@ public class Task3_TDD1 {
 		assertTrue(parser.shortcutExists("o3"));
 		assertTrue(parser.shortcutExists("o4"));
 	}
-	
+	/**
 	@Test
 	public void testCorrectType() {
 		parser.addAll("opt1 opt2 opt3 opt4", "o1 o2 o3 o4", "String Integer Boolean Character");

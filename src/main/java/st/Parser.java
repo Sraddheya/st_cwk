@@ -347,12 +347,57 @@ public class Parser {
 		String[] oldShorts= shortcuts.split("\\s+");
 		String[] oldTypes = types.split("\\s+");
 		
+		List<Option> newOps = getAllOptions(oldOps, oldTypes);
+		
+		for (int i = 0; i < newOps.size(); i++) {
+			System.out.println(newOps.get(i).getName() + " " + newOps.get(i).getType() + " " + newOps.get(i).getValue());
+		}
+		
+		List<String> newShorts = getAllShorts(oldShorts);
+		
+		for (int i = 0; i < newShorts.size(); i++) {
+			System.out.println(newShorts.get(i));
+		}
+
+		//Storing
+		for (int k = 0; k < newOps.size(); k++) {
+			
+			if (newShorts.size() > k) {
+				optionMap.store(newOps.get(k), newShorts.get(k));
+				System.out.println(newOps.get(k).getName() + " " + newOps.get(k).getType() + " " + newOps.get(k).getValue() + " " + newShorts.get(k));
+			} else {
+				optionMap.store(newOps.get(k), "");
+				System.out.println(newOps.get(k).getName() + " " + newOps.get(k).getType() + " " + newOps.get(k).getValue() + "NOSHORTCUT");
+			}
+		}
+		
+		System.out.println();
+	}
+	
+	public void addAll(String options, String types) {
+		String[] oldOps = options.split("\\s+");
+		String[] oldTypes = types.split("\\s+");
+		
+		List<Option> newOps = getAllOptions(oldOps, oldTypes);
+		
+		for (int i = 0; i < newOps.size(); i++) {
+			System.out.println(newOps.get(i).getName() + " " + newOps.get(i).getType() + " " + newOps.get(i).getValue());
+		}
+
+		//Storing
+		for (int k = 0; k < newOps.size(); k++) {
+			optionMap.store(newOps.get(k), "");
+			System.out.println(newOps.get(k).getName() + " " + newOps.get(k).getType() + " " + newOps.get(k).getValue());
+		}
+		
+		System.out.println();
+	}
+	
+	private List<Option> getAllOptions(String[] oldOps, String[] oldTypes){
 		List<Option> newOps = new ArrayList<Option>();
-		List<String> newShorts = new ArrayList<String>();
 		
 		int typeIndex;
 
-		//New options
 		for (int i = 0; i < oldOps.length; ++i) {
 			
 			if (oldTypes.length - 1 < i) {
@@ -370,7 +415,12 @@ public class Parser {
 			}
 		}
 		
-		//New Shortcuts
+		return newOps;
+	}
+	
+	private List<String> getAllShorts(String[] oldShorts){
+		List<String> newShorts = new ArrayList<String>();
+		
 		for (int j = 0; j < oldShorts.length; j++) {
 			if (oldShorts[j].contains("-")) {
 				newShorts.addAll(ungroupShort(oldShorts[j]));
@@ -378,16 +428,8 @@ public class Parser {
 				newShorts.add(oldShorts[j]);
 			}
 		}
-
-		//Storing
-		for (int j = 0; j < newOps.size(); ++j) {
-			
-			if (newShorts.size() - 1 < j) {
-				optionMap.store(newOps.get(j), newShorts.get(j));
-			} else {
-				optionMap.store(newOps.get(j), "");
-			}
-		}
+		
+		return newShorts;
 	}
 	
 	private List<Option> ungroupOption(String options, Type type) {
