@@ -254,6 +254,9 @@ public class Parser {
 	}
 	
 	//HELPERS-------------------------------------------------------------------------------------------------
+	
+	private Pattern pattern = Pattern.compile("(([A-Za-z0-9_])+(([A-Z]-[A-Z]+)|[a-z]-[a-z]+|[0-9]-[0-9]+))");
+	
 	private Type stringToType(String type) {
 		if (type.equals("String")){
 			return Type.STRING;
@@ -268,23 +271,11 @@ public class Parser {
 		}
 	}
 	
-	private boolean isSameRange(String startStr, String endStr) {
-		/**
-		if (endStr.length()!=1) {
-			return false;
-		}**/
-		
-		char start = startStr.charAt(0);
-		char end = endStr.charAt(0);
-		
-		if (Character.isDigit(start) && Character.isDigit(end)) {
-			return true;
-		} else if (Character.isUpperCase(start) && Character.isUpperCase(end) && endStr.length()==1) {
-			return true;
-		} else if (Character.isLowerCase(start) && Character.isLowerCase(end) && endStr.length()==1) {
-			return true;
-		}
-		return false;
+	public boolean isValidForm(String str) {
+	    if (str == null) {
+	        return false; 
+	    }
+	    return pattern.matcher(str).matches();
 	}
 
 	
@@ -341,6 +332,24 @@ public class Parser {
 		return newOps;
 	}
 	
+	private boolean isSameRange(String startStr, String endStr) {
+		
+		if (endStr.length()!=1) {
+			return false;
+		}
+		
+		char start = startStr.charAt(0);
+		char end = endStr.charAt(0);
+		
+		if (Character.isDigit(start) && Character.isDigit(end)) {
+			return true;
+		} else if (Character.isUpperCase(start) && Character.isUpperCase(end) && endStr.length()==1) {
+			return true;
+		} else if (Character.isLowerCase(start) && Character.isLowerCase(end) && endStr.length()==1) {
+			return true;
+		}
+		return false;
+	}
 	**/
 	
 	public void addAll(String options, String shortcuts, String types) {
@@ -443,7 +452,7 @@ public class Parser {
 		String startStr = arr[0].substring(nameLen, nameLen+1);
 		String endStr = arr[1];
 		
-		if (isSameRange(startStr, endStr)) {
+		if (isValidForm(options)) {
 			char start = startStr.charAt(0);
 			char end = endStr.charAt(0);
 
@@ -469,7 +478,7 @@ public class Parser {
 		String startStr = arr[0].substring(nameLen, nameLen+1);
 		String endStr = arr[1];
 		
-		if (isSameRange(startStr, endStr)) {
+		if (isValidForm(shortcuts)) {
 			char start = startStr.charAt(0);
 			char end = endStr.charAt(0);
 
@@ -483,6 +492,7 @@ public class Parser {
 		
 		return newShorts;
 	}
+
 	
 	
 }

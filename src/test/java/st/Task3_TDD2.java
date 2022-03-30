@@ -31,5 +31,20 @@ public class Task3_TDD2 {
 		assertEquals(parser.getInteger("opt3"), 0);
 		assertEquals(parser.getInteger("opt4"), 0);
 	}
+	
+	@Test
+public void test() {
+	assertTrue(parser.isValid("opt1-1A3"));
+	assertTrue(parser.isValid("optA-C"));
+	assertTrue(parser.isValid("opta-c"));
+	assertFalse(parser.isValid("opt1A-3"));
+	assertFalse(parser.isValid("opt1a-3"));
+	assertFalse(parser.isValid("opt1-3a"));
+	assertFalse(parser.isValid("opt1-3A"));
+	assertFalse(parser.isValid("optaA-b"));
+	assertFalse(parser.isValid("opt1a-3"));
+}
+	
+	
 
 }
