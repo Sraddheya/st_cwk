@@ -14,8 +14,8 @@ public class Task3_TDD1 {
 		parser = new Parser();
 	}
 
-	/**
-	//AddAll SPEC 1 AND 4-------------------------------------------------------------------------------------------
+	
+	//AddAll SPEC 1 AND 4 PASS-------------------------------------------------------------------------------------------
 	@Test
 	public void testOptionExists() {
 		parser.addAll("opt1 opt2 opt3 opt4", "String Integer Boolean Character");
@@ -24,7 +24,7 @@ public class Task3_TDD1 {
 		assertTrue(parser.optionExists("opt3"));
 		assertTrue(parser.optionExists("opt4"));
 	}
-	**/
+	
 	@Test
 	public void testShortcutExists() {
 		parser.addAll("opt1 opt2 opt3 opt4", "o1 o2 o3 o4", "String Integer Boolean Character");
@@ -33,7 +33,7 @@ public class Task3_TDD1 {
 		assertTrue(parser.shortcutExists("o3"));
 		assertTrue(parser.shortcutExists("o4"));
 	}
-	/**
+	
 	@Test
 	public void testCorrectType() {
 		parser.addAll("opt1 opt2 opt3 opt4", "o1 o2 o3 o4", "String Integer Boolean Character");
@@ -43,7 +43,7 @@ public class Task3_TDD1 {
 		assertEquals(parser.getCharacter("opt4"), '\0');
 	}
 	
-	//AddAll SPEC 2 AND 3-------------------------------------------------------------------------------------------
+	//AddAll SPEC 2 AND 3 PASS-------------------------------------------------------------------------------------------
 	@Test
 	public void testOptionSpace() {
 		parser.addAll("opt1    opt2", "o1    o2", "String     String");
@@ -102,7 +102,7 @@ public class Task3_TDD1 {
 		assertEquals(parser.getInteger("opt3"), 0);
 	}
 	
-	//GroupInit SPEC 1 AND 3 AND 7-------------------------------------------------------------------------------------------
+	//GroupInit SPEC 1 AND 3 AND 7 PASS-------------------------------------------------------------------------------------------
 	@Test
 	public void testBasicGroupUpperAlpha() {
 		parser.addAll("optA-C", "oA-C", "String");
@@ -187,36 +187,84 @@ public class Task3_TDD1 {
 	
 	@Test
 	public void testRange() {}
-	 
+	
 	//GroupInit SPEC 4-------------------------------------------------------------------------------------------
-	@Test (expected=IllegalArgumentException.class)
+	@Test 
 	public void testMixRange1() {
 		parser.addAll("opt1-C", "o1-C", "String");
+		assertFalse(parser.optionExists("opt1"));
+		assertFalse(parser.optionExists("optC"));
+		assertFalse(parser.optionExists("opt1-C"));
+		assertFalse(parser.shortcutExists("o1"));
+		assertFalse(parser.shortcutExists("oC"));
+		assertFalse(parser.shortcutExists("o1-C"));
 	}
 	
-	@Test (expected=IllegalArgumentException.class)
+	@Test 
 	public void testMixRange2() {
 		parser.addAll("opt1-c", "o1-c", "String");
+		assertFalse(parser.optionExists("opt1"));
+		assertFalse(parser.optionExists("optc"));
+		assertFalse(parser.optionExists("opt1-c"));
+		assertFalse(parser.shortcutExists("o1"));
+		assertFalse(parser.shortcutExists("oc"));
+		assertFalse(parser.shortcutExists("o1-c"));
 	}
 	
-	@Test (expected=IllegalArgumentException.class)
+	@Test 
 	public void testMixRange3() {
 		parser.addAll("optA-c", "oA-c", "String");
+		assertFalse(parser.optionExists("optA"));
+		assertFalse(parser.optionExists("optc"));
+		assertFalse(parser.optionExists("optA-c"));
+		assertFalse(parser.shortcutExists("oA"));
+		assertFalse(parser.shortcutExists("oc"));
+		assertFalse(parser.shortcutExists("oA-c"));
 	}
 	
-	@Test (expected=IllegalArgumentException.class)
+	@Test 
 	public void testMixRange4() {
 		parser.addAll("opt1A-3", "o1A-3", "String");
+		assertFalse(parser.optionExists("opt1"));
+		assertFalse(parser.optionExists("optA"));
+		assertFalse(parser.optionExists("opt3"));
+		assertFalse(parser.optionExists("opt1A"));
+		assertFalse(parser.optionExists("opt1A-3"));
+		assertFalse(parser.shortcutExists("o1"));
+		assertFalse(parser.shortcutExists("oA"));
+		assertFalse(parser.shortcutExists("o3"));
+		assertFalse(parser.shortcutExists("o1A"));
+		assertFalse(parser.shortcutExists("o1A-3"));
 	}
 	
-	@Test (expected=IllegalArgumentException.class)
+	@Test 
 	public void testMixRange5() {
 		parser.addAll("optA1-C", "oA1-C", "String");
+		assertFalse(parser.optionExists("opt1"));
+		assertFalse(parser.optionExists("optA"));
+		assertFalse(parser.optionExists("optC"));
+		assertFalse(parser.optionExists("optA1"));
+		assertFalse(parser.optionExists("optA1-C"));
+		assertFalse(parser.shortcutExists("o1"));
+		assertFalse(parser.shortcutExists("oA"));
+		assertFalse(parser.shortcutExists("oC"));
+		assertFalse(parser.shortcutExists("oA1"));
+		assertFalse(parser.shortcutExists("oA1-C"));
 	}
 	
-	@Test (expected=IllegalArgumentException.class)
+	@Test 
 	public void testMixRange6() {
 		parser.addAll("optaA-c", "oaA-c", "String");
+		assertFalse(parser.optionExists("opta"));
+		assertFalse(parser.optionExists("optA"));
+		assertFalse(parser.optionExists("optc"));
+		assertFalse(parser.optionExists("optaA"));
+		assertFalse(parser.optionExists("optaA-c"));
+		assertFalse(parser.shortcutExists("oa"));
+		assertFalse(parser.shortcutExists("oA"));
+		assertFalse(parser.shortcutExists("oc"));
+		assertFalse(parser.shortcutExists("oaA"));
+		assertFalse(parser.shortcutExists("oaA-c"));
 	}
 	
 	//GroupInit SPEC 6-------------------------------------------------------------------------------------------
@@ -231,7 +279,7 @@ public class Task3_TDD1 {
 		assertFalse(parser.optionExists("opt130"));
 		assertFalse(parser.optionExists("opt131"));
 	}
-	
+	/**
 	//GroupInit SPEC 10-------------------------------------------------------------------------------------------
 	@Test
 	public void groupRangeDecreasingNum() {

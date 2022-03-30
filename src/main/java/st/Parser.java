@@ -269,18 +269,19 @@ public class Parser {
 	}
 	
 	private boolean isSameRange(String startStr, String endStr) {
+		/**
 		if (endStr.length()!=1) {
 			return false;
-		}
+		}**/
 		
 		char start = startStr.charAt(0);
 		char end = endStr.charAt(0);
 		
 		if (Character.isDigit(start) && Character.isDigit(end)) {
 			return true;
-		} else if (Character.isUpperCase(start) && Character.isUpperCase(end)) {
+		} else if (Character.isUpperCase(start) && Character.isUpperCase(end) && endStr.length()==1) {
 			return true;
-		} else if (Character.isLowerCase(start) && Character.isLowerCase(end)) {
+		} else if (Character.isLowerCase(start) && Character.isLowerCase(end) && endStr.length()==1) {
 			return true;
 		}
 		return false;
@@ -363,11 +364,11 @@ public class Parser {
 		for (int k = 0; k < newOps.size(); k++) {
 			
 			if (newShorts.size() > k) {
-				optionMap.store(newOps.get(k), newShorts.get(k));
 				System.out.println(newOps.get(k).getName() + " " + newOps.get(k).getType() + " " + newOps.get(k).getValue() + " " + newShorts.get(k));
+				optionMap.store(newOps.get(k), newShorts.get(k));
 			} else {
-				optionMap.store(newOps.get(k), "");
 				System.out.println(newOps.get(k).getName() + " " + newOps.get(k).getType() + " " + newOps.get(k).getValue() + "NOSHORTCUT");
+				optionMap.store(newOps.get(k), "");
 			}
 		}
 		
