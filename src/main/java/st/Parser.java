@@ -253,6 +253,7 @@ public class Parser {
 	    }
 	}
 	
+	/**
 	//TASK 3-------------------------------------------------------------------------------------------------
 	
 	private Pattern patternForm = Pattern.compile("(([A-Za-z0-9_])+(([A-Z]-[A-Z]+)|[a-z]-[a-z]+|[0-9]-[0-9]+))");
@@ -403,6 +404,6 @@ public class Parser {
 		}
 		
 		return single;
-	}
+	}**/
 	
 }

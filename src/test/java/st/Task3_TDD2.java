@@ -49,6 +49,4 @@ public class Task3_TDD2 {
 		assertFalse(parser.isValid("opt1a-3"));
 	}**/
 	
-	
-
 }
