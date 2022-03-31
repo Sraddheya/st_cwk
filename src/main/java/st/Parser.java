@@ -293,6 +293,7 @@ public class Parser {
 		
 		List<Option> newOps = getAllOptions(oldOps, oldTypes);
 		List<String> newShorts = getAllShorts(oldShorts);
+		
 
 		//Storing
 		for (int k = 0; k < newOps.size(); k++) {

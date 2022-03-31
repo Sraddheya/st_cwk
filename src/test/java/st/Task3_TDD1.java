@@ -173,7 +173,7 @@ public class Task3_TDD1 {
 		assertEquals(parser.getString("opt3"), "");
 	}
 	
-	//GroupInit SPEC 2 AND 5-------------------------------------------------------------------------------------------
+	//GroupInit SPEC 2-------------------------------------------------------------------------------------------
 	@Test
 	public void testUnderscore() {
 		parser.addAll("opt_1-2", "o_1-2", "String");
@@ -193,30 +193,51 @@ public class Task3_TDD1 {
 	}
 	
 	@Test
-	public void testAllUpperOption() {}
+	public void testAllUpperOption() {
+		parser.addAll("ABCDEFGHOJKLMNOPQRSTUVWXYZ1-2", "o1-2", "String");
+		assertTrue(parser.optionExists("ABCDEFGHOJKLMNOPQRSTUVWXYZ1"));
+		assertTrue(parser.optionExists("ABCDEFGHOJKLMNOPQRSTUVWXYZ2"));
+		assertTrue(parser.shortcutExists("o1"));
+		assertTrue(parser.shortcutExists("o2"));
+	}
 	
 	@Test
-	public void testAllNumericOption() {}
+	public void testAllNumericOption() {
+		parser.addAll("opt12345678901-2", "o1-2", "String");
+		assertTrue(parser.optionExists("opt12345678901"));
+		assertTrue(parser.optionExists("opt12345678902"));
+		assertTrue(parser.shortcutExists("o1"));
+		assertTrue(parser.shortcutExists("o2"));
+	}
 	
 	@Test
-	public void testSpecialCharOption() {}
+	public void testAllLowerShortcut() {
+		parser.addAll("opt1-2", "abcdefghijklmnopqrstuvwxyz1-2", "String");
+		assertTrue(parser.optionExists("opt1"));
+		assertTrue(parser.optionExists("opt2"));
+		assertTrue(parser.shortcutExists("abcdefghijklmnopqrstuvwxyz1"));
+		assertTrue(parser.shortcutExists("abcdefghijklmnopqrstuvwxyz2"));
+	}
 	
 	@Test
-	public void testAllLowerShortcut() {}
+	public void testAllUpperShortcut() {
+		parser.addAll("opt1-2", "ABCDEFGHOJKLMNOPQRSTUVWXYZ1-2", "String");
+		assertTrue(parser.optionExists("opt1"));
+		assertTrue(parser.optionExists("opt2"));
+		assertTrue(parser.shortcutExists("ABCDEFGHOJKLMNOPQRSTUVWXYZ1"));
+		assertTrue(parser.shortcutExists("ABCDEFGHOJKLMNOPQRSTUVWXYZ2"));
+	}
 	
 	@Test
-	public void testAllUpperShortcut() {}
+	public void testAllNumericShortcut() {
+		parser.addAll("opt1-2", "o12345678901-2", "String");
+		assertTrue(parser.optionExists("opt1"));
+		assertTrue(parser.optionExists("opt2"));
+		assertTrue(parser.shortcutExists("o12345678901"));
+		assertTrue(parser.shortcutExists("o12345678902"));
+	}
 	
-	@Test
-	public void testAllNumericShortcut() {}
-	
-	@Test
-	public void testSpecialCharShortcut() {}
-	
-	@Test
-	public void testRange() {}
-	
-	//GroupInit SPEC 4-------------------------------------------------------------------------------------------
+	//GroupInit SPEC 4 AND 5 PASS-------------------------------------------------------------------------------------------
 	@Test 
 	public void testMixRange1() {
 		parser.addAll("opt1-C", "o1-C", "String");
@@ -296,6 +317,19 @@ public class Task3_TDD1 {
 	}
 	
 	//GroupInit SPEC 6-------------------------------------------------------------------------------------------
+	@Test 
+	public void testGroupSpecialCharOption() {
+		parser.addAll("opt#1-3", "o1-3", "String");
+		assertFalse(parser.optionExists("opt#1"));
+		assertFalse(parser.shortcutExists("o1"));
+	}
+	
+	@Test 
+	public void testGroupSpecialCharShortcut() {
+		parser.addAll("opt1-3", "o#1-3", "String");
+		assertTrue(parser.optionExists("opt1"));
+		assertFalse(parser.shortcutExists("o#1"));
+	}
 	
 	//GroupInit SPEC 8-------------------------------------------------------------------------------------------
 	@Test
@@ -307,6 +341,14 @@ public class Task3_TDD1 {
 		assertFalse(parser.optionExists("opt130"));
 		assertFalse(parser.optionExists("opt131"));
 	}
+	
+	//GroupInit SPEC 9-------------------------------------------------------------------------------------------
+		@Test
+		public void groupEndChars() {
+			parser.addAll("opt123-6ab", "String");
+			assertFalse(parser.optionExists("opt123"));
+			assertFalse(parser.optionExists("opt123ab"));
+		}
 	
 	//GroupInit SPEC 10-------------------------------------------------------------------------------------------
 	@Test
@@ -335,8 +377,21 @@ public class Task3_TDD1 {
 	
 	//GroupInit SPEC 11-------------------------------------------------------------------------------------------
 	@Test
-	public void testMultipleGroupsSameShortcut() {
+	public void testMultipleOptionsSameShortcut() {
 		parser.addAll("opt1-2 opt3-4", "o1-4", "String");
+		assertTrue(parser.optionExists("opt1"));
+		assertTrue(parser.optionExists("opt2"));
+		assertTrue(parser.optionExists("opt3"));
+		assertTrue(parser.optionExists("opt4"));
+		assertTrue(parser.shortcutExists("o1"));
+		assertTrue(parser.shortcutExists("o2"));
+		assertTrue(parser.shortcutExists("o3"));
+		assertTrue(parser.shortcutExists("o4"));
+	}
+	
+	@Test
+	public void testMultipleShortcutsSameOption() {
+		parser.addAll("opt1-4", "o1-2 o3-4", "String");
 		assertTrue(parser.optionExists("opt1"));
 		assertTrue(parser.optionExists("opt2"));
 		assertTrue(parser.optionExists("opt3"));
@@ -350,7 +405,7 @@ public class Task3_TDD1 {
 	//GroupInit SPEC 12-------------------------------------------------------------------------------------------
 	@Test (expected=IllegalArgumentException.class)
 	public void testInvalidType() {
-		parser.addAll("opt1-3", "o1-3", "NoType String");
+		parser.addAll("opt1-3", "o1-3", "NoType");
 	}
 	
 }
