@@ -314,9 +314,6 @@ public class Parser {
 		String[] oldTypes = types.split("\\s+");
 		
 		List<Option> newOps = getAllOptions(oldOps, oldTypes);
-		for (int i = 0; i < newOps.size(); i++) {
-			System.out.println(newOps.get(i).getName() + " " + newOps.get(i).getType() + " " + newOps.get(i).getValue());
-		}
 		
 		//Storing
 		for (int k = 0; k < newOps.size(); k++) {

@@ -17,7 +17,7 @@ public class Task3_TDD1 {
 	//AddAll SPEC 1 AND 4 PASS-------------------------------------------------------------------------------------------
 	@Test
 	public void testOptionExists() {
-		parser.addAll("opt1-3 opt2 opt3 opt4", "String Integer Boolean Character");
+		parser.addAll("opt1 opt2 opt3 opt4", "String Integer Boolean Character");
 		assertTrue(parser.optionExists("opt1"));
 		assertTrue(parser.optionExists("opt2"));
 		assertTrue(parser.optionExists("opt3"));
@@ -42,31 +42,60 @@ public class Task3_TDD1 {
 		assertEquals(parser.getCharacter("opt4"), '\0');
 	}
 	
-	//AddAll SPEC 2 AND 3 PASS-------------------------------------------------------------------------------------------
+	//AddAll SPEC 2 PASS-------------------------------------------------------------------------------------------------
 	@Test
-	public void testOptionSpace() {
-		parser.addAll("opt1    opt2", "o1    o2", "String     String");
+	public void testSameName() {
+		parser.addAll("opt1 opt1", "o1 o2", "String Integer");
+		assertEquals(parser.getString("o1"), "");
+		assertEquals(parser.getInteger("o2"), 0);
+	}
+	
+	@Test (expected=IllegalArgumentException.class)
+	public void testStartsWithDigit() {
+		parser.addAll("1opt1 opt1", "o1 o2", "String Integer");
 		assertTrue(parser.optionExists("opt1"));
-		assertTrue(parser.optionExists("opt2"));
+		assertFalse(parser.optionExists("1opt1"));
 	}
 	
 	@Test
-	public void testShortcutSpace() {
-		parser.addAll("opt1    opt2", "o1    o2", "String     String");
-		assertTrue(parser.shortcutExists("o1"));
-		assertTrue(parser.shortcutExists("o2"));
+	public void testCaseSensitive() {
+		parser.addAll("Opt1 opt1", "o1 o2", "String Integer");
+		assertTrue(parser.optionExists("Opt1"));
+		assertTrue(parser.optionExists("opt1"));
 	}
 	
 	@Test
-	public void testTypeSpace() {
-		parser.addAll("opt1 opt2 opt3 opt4", "o1 o2 o3 o4", "String      Integer      Boolean      Character");
-		assertEquals(parser.getString("opt1"), "");
-		assertEquals(parser.getInteger("opt2"), 0);
-		assertEquals(parser.getBoolean("opt3"), false);
-		assertEquals(parser.getCharacter("opt4"), '\0');
+	public void testShortcutSameAsOtherName() {
+		parser.addAll("opt1 opt2", "o1 opt1", "String Integer");
+		assertTrue(parser.optionExists("opt1"));
+		assertTrue(parser.shortcutExists("opt1"));
 	}
 	
-	//AddAll SPEC 5-------------------------------------------------------------------------------------------
+	//AddAll SPEC 3 PASS-------------------------------------------------------------------------------------------------
+		@Test
+		public void testOptionSpace() {
+			parser.addAll("opt1    opt2", "o1    o2", "String    String");
+			assertTrue(parser.optionExists("opt1"));
+			assertTrue(parser.optionExists("opt2"));
+		}
+		
+		@Test
+		public void testShortcutSpace() {
+			parser.addAll("opt1    opt2", "o1    o2", "String     String");
+			assertTrue(parser.shortcutExists("o1"));
+			assertTrue(parser.shortcutExists("o2"));
+		}
+		
+		@Test
+		public void testTypeSpace() {
+			parser.addAll("opt1 opt2 opt3 opt4", "o1 o2 o3 o4", "String      Integer      Boolean      Character");
+			assertEquals(parser.getString("opt1"), "");
+			assertEquals(parser.getInteger("opt2"), 0);
+			assertEquals(parser.getBoolean("opt3"), false);
+			assertEquals(parser.getCharacter("opt4"), '\0');
+		}
+	
+	//AddAll SPEC 5 PASS------------------------------------------------------------------------------------------------
 	@Test
 	public void testMoreOptionsThanShortcuts() {
 		parser.addAll("opt1 opt2", "o1", "String String");
@@ -75,7 +104,7 @@ public class Task3_TDD1 {
 		assertTrue(parser.shortcutExists("o1"));
 	}
 	
-	//AddAll SPEC 6-------------------------------------------------------------------------------------------
+	//AddAll SPEC 6 PASS------------------------------------------------------------------------------------------------
 	@Test
 	public void testLessOptionsThanShortcuts() {
 		parser.addAll("opt1", "o1 o2", "String");
@@ -92,7 +121,7 @@ public class Task3_TDD1 {
 		assertEquals(parser.getString("opt1"), "");
 	}
 	
-	//AddAll SPEC 7-------------------------------------------------------------------------------------------
+	//AddAll SPEC 7 PASS-----------------------------------------------------------------------------------------------
 	@Test
 	public void testMoreOptionsThanTypes() {
 		parser.addAll("opt1 opt2 opt3", "o1 o2 o3", "String Integer");
