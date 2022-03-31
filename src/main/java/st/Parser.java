@@ -291,16 +291,18 @@ public class Parser {
 		String[] oldShorts= shortcuts.split("\\s+");
 		String[] oldTypes = types.split("\\s+");
 		
-		List<String> newOps = ungroup(oldOps);
-		List<String> newShorts = ungroup(oldShorts);
+		List<Option> newOps = getAllOptions(oldOps, oldTypes);
+		List<String> newShorts = getAllShorts(oldShorts);
 
 		//Storing
 		for (int k = 0; k < newOps.size(); k++) {
 			
 			if (newShorts.size() > k) {
 				optionMap.store(newOps.get(k), newShorts.get(k));
+				System.out.println(newOps.get(k).getName() + " " + newOps.get(k).getType() + " " + newOps.get(k).getValue() + " " + newShorts.get(k));
 			} else {
 				optionMap.store(newOps.get(k), "");
+				System.out.println(newOps.get(k).getName() + " " + newOps.get(k).getType() + " " + newOps.get(k).getValue() + "NOSHORTCUT");
 			}
 		}
 		
@@ -312,10 +314,14 @@ public class Parser {
 		String[] oldTypes = types.split("\\s+");
 		
 		List<Option> newOps = getAllOptions(oldOps, oldTypes);
+		for (int i = 0; i < newOps.size(); i++) {
+			System.out.println(newOps.get(i).getName() + " " + newOps.get(i).getType() + " " + newOps.get(i).getValue());
+		}
 		
 		//Storing
 		for (int k = 0; k < newOps.size(); k++) {
 			optionMap.store(newOps.get(k), "");
+			System.out.println(newOps.get(k).getName() + " " + newOps.get(k).getType() + " " + newOps.get(k).getValue() + "NOSHORTCUT");
 		}
 		
 		System.out.println();
@@ -324,24 +330,25 @@ public class Parser {
 	private List<Option> getAllOptions(String[] oldOps, String[] oldTypes){
 		List<Option> newOps = new ArrayList<Option>();
 		
-		int typeIndex;
+		int typeIndex = 0;
 
 		for (int i = 0; i < oldOps.length; ++i) {
 			
-			if (oldTypes.length - 1 < i) {
-				typeIndex = oldTypes.length - 1;
-			} else {
+			if (i < oldTypes.length) {
 				typeIndex = i;
 			}
 			
 			Type type = stringToType(oldTypes[typeIndex]);
 			
-			if (isValidForm(oldOps[i])) {
-				if (oldOps[i].contains("-")) {
-					newOps.addAll(ungroupOption(oldOps[i], type));
-				} else {
-					newOps.add(new Option(oldOps[i], type));
+			if (oldOps[i].contains("-")) {
+				if (isValidForm(oldOps[i])) {
+					for (String op : ungroup(oldOps[i])) {
+					    newOps.add(new Option(op, type));
+					}
 				}
+			} else {
+				newOps.add(new Option(oldOps[i], type));
+				
 			}
 		}
 		
@@ -351,21 +358,24 @@ public class Parser {
 	private List<String> getAllShorts(String[] oldShorts){
 		List<String> newShorts = new ArrayList<String>();
 		
-		for (int j = 0; j < oldShorts.length; j++) {
+		for (int i = 0; i < oldShorts.length; i++) {
 			
-			if (isValidForm(oldShorts[j])) {
-				if (oldShorts[j].contains("-")) {
-					newShorts.addAll(ungroupShort(oldShorts[j]));
-				} else {
-					newShorts.add(oldShorts[j]);
+			if (oldShorts[i].contains("-")) {
+				if (isValidForm(oldShorts[i])) {
+					for (String sc : ungroup(oldShorts[i])) {
+					    newShorts.add(sc);
+					}
 				}
+			} else {
+				newShorts.add(oldShorts[i]);
+				
 			}
 		}
 		
 		return newShorts;
 	}
 	
-	public List<String> ungroup(String group) {
+	private List<String> ungroup(String group) {
 		List<String> single = new ArrayList<String>();
 		
 		String[] arr = group.split("-");
@@ -378,7 +388,7 @@ public class Parser {
 			int start = Integer.parseInt(arr[0].substring(nameLen, nameLen+1));
 			int end = Integer.parseInt(arr[1]);
 			
-			for (int i = start; i<= end; i++) {
+			for (int i = Math.min(start, end); i<= Math.max(start, end); i++) {
 				newName = name + Integer.toString(i);
 				single.add(newName);
 			}
@@ -387,7 +397,7 @@ public class Parser {
 			char start = arr[0].charAt(nameLen);
 			char end = arr[1].charAt(0);
 			
-			for (char i = start; i<= end; i++) {
+			for (char i = (char) Math.min(start, end); i<= Math.max(start, end); i++) {
 				newName = name + (char) i;
 				single.add(newName);
 			}
@@ -396,7 +406,5 @@ public class Parser {
 		
 		return single;
 	}
-	
-	
 	
 }

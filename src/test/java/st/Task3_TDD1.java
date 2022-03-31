@@ -14,11 +14,10 @@ public class Task3_TDD1 {
 		parser = new Parser();
 	}
 
-	
 	//AddAll SPEC 1 AND 4 PASS-------------------------------------------------------------------------------------------
 	@Test
 	public void testOptionExists() {
-		parser.addAll("opt1 opt2 opt3 opt4", "String Integer Boolean Character");
+		parser.addAll("opt1-3 opt2 opt3 opt4", "String Integer Boolean Character");
 		assertTrue(parser.optionExists("opt1"));
 		assertTrue(parser.optionExists("opt2"));
 		assertTrue(parser.optionExists("opt3"));
@@ -279,7 +278,7 @@ public class Task3_TDD1 {
 		assertFalse(parser.optionExists("opt130"));
 		assertFalse(parser.optionExists("opt131"));
 	}
-	/**
+	
 	//GroupInit SPEC 10-------------------------------------------------------------------------------------------
 	@Test
 	public void groupRangeDecreasingNum() {
@@ -324,5 +323,5 @@ public class Task3_TDD1 {
 	public void testInvalidType() {
 		parser.addAll("opt1-3", "o1-3", "NoType String");
 	}
-	**/
+	
 }

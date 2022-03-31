@@ -31,11 +31,11 @@ public class Task3_TDD2 {
 		assertEquals(parser.getInteger("opt2"), 0);
 		assertEquals(parser.getInteger("opt3"), 0);
 		assertEquals(parser.getInteger("opt4"), 0);
-	}**/
+	}
 	
 	@Test
 	public void test() {
-		parser.ungroup("opt1-3");
+		parser.ungroup("opt129-11");
 		parser.ungroup("optA-C");
 		parser.ungroup("opta-c");
 		/**
@@ -46,8 +46,8 @@ public class Task3_TDD2 {
 		assertFalse(parser.isValid("opt1-3a"));
 		assertFalse(parser.isValid("opt1-3A"));
 		assertFalse(parser.isValid("optaA-b"));
-		assertFalse(parser.isValid("opt1a-3"));**/
-	}
+		assertFalse(parser.isValid("opt1a-3"));
+	}**/
 	
 	
 
