@@ -127,7 +127,7 @@ public class Task3_TDD2 {
 	**/
 	
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
-	@Test
+	/**@Test
 	public void groupInitInvalidGroupTest3() {
 		parser.addAll("2P1-3 oA-F", "Integer Integer");
 		parser.parse("--oA=12");
@@ -145,6 +145,6 @@ public class Task3_TDD2 {
 		
 		assertEquals(parser.getInteger("oA"), 12);
 		assertEquals(parser.getInteger("oE"), 56);
-	}
+	}**/
 	
 }
