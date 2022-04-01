@@ -253,7 +253,7 @@ public class Parser {
 	    }
 	}
 	
-	/**
+	
 	//TASK 3-------------------------------------------------------------------------------------------------
 	
 	private Pattern patternForm = Pattern.compile("(([A-Za-z0-9_])+(([A-Z]-[A-Z]+)|[a-z]-[a-z]+|[0-9]-[0-9]+))");
@@ -288,6 +288,12 @@ public class Parser {
 	}
 	
 	public void addAll(String options, String shortcuts, String types) {
+		if (options==null || options.isBlank() || options.isEmpty() 
+			|| shortcuts==null
+			|| types==null || types.isBlank() || types.isEmpty()) {
+    		throw new IllegalArgumentException("Illegal argument provided in method. Null and empty values cannot be passed.");
+    	} 
+
 		String[] oldOps = options.split("\\s+");
 		String[] oldShorts= shortcuts.split("\\s+");
 		String[] oldTypes = types.split("\\s+");
@@ -307,11 +313,15 @@ public class Parser {
 				System.out.println(newOps.get(k).getName() + " " + newOps.get(k).getType() + " " + newOps.get(k).getValue() + "NOSHORTCUT");
 			}
 		}
-		
-		System.out.println();
+
 	}
 	
 	public void addAll(String options, String types) {
+		if (options==null || options.isBlank() || options.isEmpty() 
+			|| types==null || types.isBlank() || types.isEmpty()) {
+    		throw new IllegalArgumentException("Illegal argument provided in method. Null values cannot be passed.");
+    	} 
+
 		String[] oldOps = options.split("\\s+");
 		String[] oldTypes = types.split("\\s+");
 		
@@ -322,8 +332,6 @@ public class Parser {
 			optionMap.store(newOps.get(k), "");
 			System.out.println(newOps.get(k).getName() + " " + newOps.get(k).getType() + " " + newOps.get(k).getValue() + "NOSHORTCUT");
 		}
-		
-		System.out.println();
 	}
 	
 	private List<Option> getAllOptions(String[] oldOps, String[] oldTypes){
@@ -404,6 +412,6 @@ public class Parser {
 		}
 		
 		return single;
-	}**/
+	}
 	
 }
