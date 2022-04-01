@@ -31,11 +31,6 @@ private OptionMap oMap;
 		assertEquals(parser.getInteger("option"), 97);
 	}
 	
-	@Test (expected=IllegalArgumentException.class)
-	public void testGetIntegerFromNoType() {
-		parser.addOption(new Option("option", Type.NOTYPE));
-	}
-	
 	@Test
 	public void testGetCharacter() {
 		parser.addOption(new Option("option", Type.CHARACTER));
@@ -119,6 +114,33 @@ private OptionMap oMap;
 		assertEquals(op.toString(), output);
 	}
 	
+	@Test 
+	public void testOptionsEqual1() {
+		Option opt1 = new Option("opt1", Type.STRING);
+		assertFalse(opt1.equals(null));
+	}
+	
+	@Test 
+	public void testOptionsEqual2() {
+		Option optStr = new Option("opt", Type.STRING);
+		Option optInt = new Option("opt", Type.INTEGER);
+		assertFalse(optStr.equals(optInt));
+	}
+	
+	@Test 
+	public void testOptionsEqual3() {
+		Option opt1 = new Option(null, Type.STRING);
+		Option opt2 = new Option("opt", Type.STRING);
+		assertFalse(opt1.equals(opt2));
+	}
+	
+	@Test 
+	public void testOptionsEqual4() {
+		Option opt1 = new Option("opt1", Type.STRING);
+		Option opt2 = new Option("opt2", Type.STRING);
+		assertFalse(opt1.equals(opt2));
+	}
+	
 	//OPTIONMAP-------------------------------------------------------------------
 	@Test (expected=RuntimeException.class)
 	public void testGetShortcut() {
@@ -162,6 +184,24 @@ private OptionMap oMap;
 		oMap.store(option, "o1");
 		String output = "Options Map: \n{opt1=Option[name:opt1, value:, type:STRING]}\nShortcuts Map:\n{o1=Option[name:opt1, value:, type:STRING]}";
 		assertEquals(oMap.toString(), output);
+	}
+	
+	@Test (expected=IllegalArgumentException.class)
+	public void testIsOptionValid1() {
+		Option option = new Option("", Type.STRING);
+		oMap.store(option, "");
+	}
+	
+	@Test (expected=IllegalArgumentException.class)
+	public void testIsOptionValid2() {
+		Option option = new Option(null, Type.STRING);
+		oMap.store(option, "");
+	}
+	
+	@Test (expected=IllegalArgumentException.class)
+	public void testIsOptionValid3() {
+		Option option = new Option("opt", Type.STRING);
+		oMap.store(option, null);
 	}
 	
 }
