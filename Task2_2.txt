@@ -1,0 +1,2 @@
+
+For line 61 in Parser.java, the default case for getInteger() can only be reached when the option is decalred with a type of NOTYPE, however this is not possible because am IllegalArgumentException is immediately thrown when decalring such an option.
