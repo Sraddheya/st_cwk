@@ -3,9 +3,7 @@ package st;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -352,10 +350,9 @@ public class Task3_Parser {
 		int typeIndex = 0;
 		int lenOps = oldOps.size();
 		int i = 0;
+		int j = 0;
 		
 		while (i < lenOps) {
-			System.out.println(i);
-			
 			if (i < oldTypes.size()) {
 				typeIndex = i;
 			}
@@ -366,63 +363,32 @@ public class Task3_Parser {
 				if (isValidGroup(oldOps.get(i))) {
 					for (String op : ungroup(oldOps.get(i))) {
 					    newOps.add(new Option(op, type));
-					    i++;
+					    j++;
 					}
 				} else {
 					if (i < oldShorts.size() && oldShorts!=null) {
-						System.out.println(oldShorts.get(i));
-						oldShorts.remove(i);
+						oldShorts.remove(j);
 					}
 					if (i < typeIndex) {
-						oldTypes.remove(i);
+						oldTypes.remove(j);
 					}
-					lenOps--;
 				}
 			} else {
 				if (isValidSingle(oldOps.get(i))) {
 					newOps.add(new Option(oldOps.get(i), type));
-					i++;
+					j++;
 				} else {
 					if (i < oldShorts.size() && oldShorts!=null) {
-						oldShorts.remove(i);
+						oldShorts.remove(j);
 					}
 					if (i < typeIndex) {
-						oldTypes.remove(i);
+						oldTypes.remove(j);
 					}
-					lenOps--;
 				}
 			}
+			i++;
 			
 		}
-		
-		/**
-		for (int i = 0; i < oldOps.size(); ++i) {
-			
-			if (i < oldTypes.size()) {
-				typeIndex = i;
-			}
-			
-			Type type = stringToType(oldTypes.get(typeIndex));
-			
-			if (oldOps.get(i).contains("-")) {
-				if (isValidGroup(oldOps.get(i))) {
-					for (String op : ungroup(oldOps.get(i))) {
-					    newOps.add(new Option(op, type));
-					}
-				} else {
-					oldShorts.remove(i);
-					oldTypes.remove(i);
-				}
-			} else {
-				if (isValidSingle(oldOps.get(i))) {
-					newOps.add(new Option(oldOps.get(i), type));
-				} else {
-					oldShorts.remove(i);
-					oldTypes.remove(i);
-				}
-				
-			}
-		}**/
 		
 		return newOps;
 	}
@@ -478,29 +444,6 @@ public class Task3_Parser {
 		}
 		
 		return single;
-	}
-	
-	private int ungroupInvalid(String group) {
-		int len = 0;
-		
-		String[] arr = group.split("-");
-		int nameLen = arr[0].length()-1;
-		
-		if (isNumeric(arr[1])) {
-			int start = Integer.parseInt(arr[0].substring(nameLen, nameLen+1));
-			int end = Integer.parseInt(arr[1]);
-			
-			len = Math.max(start, end) - Math.min(start, end);
-			
-		} else {
-			char start = arr[0].charAt(nameLen);
-			char end = arr[1].charAt(0);
-			
-			len = Math.max(start, end) - Math.min(start, end);
-			
-		}
-		
-		return len;
 	}
 	
 }

@@ -145,9 +145,26 @@ private Task3_Parser parser;
 	public void testInvalidGroup4() {
 		parser.addAll("opt*A-B opt", "oA-B o", "String");
 		assertFalse(parser.optionExists("o*A"));
-		assertTrue(parser.optionExists("o"));
 		parser.parse("-o=test");
 		assertEquals(parser.getString("opt"), "test");
 	}
 	
+	@Test
+	public void testInvalidGroup5() {
+		parser.addAll("o1-3", "o1-2a b c", "String");
+		parser.parse("-b=testb");
+		assertEquals(parser.getString("o1"), "testb");
+		parser.parse("-c=testc");
+		assertEquals(parser.getString("o2"), "testc");
+		assertEquals(parser.getString("o3"), "");
+	}
+	
+	@Test
+	public void testInvalidGroup6() {
+		parser.addAll("opt1 optionA-9 optA-C", "b c d e f", "String Integer Boolean");
+		assertTrue(parser.optionExists("optC"));
+		assertTrue(parser.optionExists("opt1"));
+		assertFalse(parser.shortcutExists("c"));
+		assertEquals(parser.getBoolean("optC"), false);
+	}
 }
