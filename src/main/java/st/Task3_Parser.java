@@ -2,13 +2,19 @@ package st;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Task3_Parser {
 
 	private OptionMap optionMap;
+	private List<String> oldOps = new ArrayList<String>();
+	private List<String> oldShorts = new ArrayList<String>();
+	private List<String> oldTypes = new ArrayList<String>();
 	
 	public Task3_Parser() {
 		optionMap = new OptionMap();
@@ -255,7 +261,9 @@ public class Task3_Parser {
 	
 	
 	//TASK 3-------------------------------------------------------------------------------------------------
-	private Pattern patternForm = Pattern.compile("(([A-Za-z0-9_])+(([A-Z]-[A-Z]+)|[a-z]-[a-z]+|[0-9]-[0-9]+))");
+	//private Pattern patternForm = Pattern.compile("(([A-Za-z0-9_])+(([A-Z]-[A-Z]+)|[a-z]-[a-z]+|[0-9]-[0-9]+))");
+	private Pattern patternGroup = Pattern.compile("(([A-Za-z0-9_])+(([A-Z]-[A-Z])|[a-z]-[a-z]|[0-9]-[0-9]+))");
+	private Pattern patternSingle = Pattern.compile("[a-zA-Z_][a-zA-Z0-9_]*");
 	private Pattern patternNumeric = Pattern.compile("-?\\d+(\\.\\d+)?");
 	
 	private Type stringToType(String type) {
@@ -272,11 +280,18 @@ public class Task3_Parser {
 		}
 	}
 	
-	private boolean isValidForm(String str) {
+	private boolean isValidGroup(String str) {
 	    if (str == null) {
 	        return false; 
 	    }
-	    return patternForm.matcher(str).matches();
+	    return patternGroup.matcher(str).matches();
+	}
+	
+	private boolean isValidSingle(String str) {
+	    if (str == null) {
+	        return false; 
+	    }
+	    return patternSingle.matcher(str).matches();
 	}
 
 	private boolean isNumeric(String strNum) {
@@ -293,17 +308,15 @@ public class Task3_Parser {
     		throw new IllegalArgumentException("Illegal argument provided in method. Null and empty values cannot be passed.");
     	} 
 
-		String[] oldOps = options.split("\\s+");
-		String[] oldShorts= shortcuts.split("\\s+");
-		String[] oldTypes = types.split("\\s+");
+		oldOps.addAll(Arrays.asList(options.split("\\s+")));
+		oldShorts.addAll(Arrays.asList(shortcuts.split("\\s+")));
+		oldTypes.addAll(Arrays.asList(types.split("\\s+")));
 		
-		List<Option> newOps = getAllOptions(oldOps, oldTypes);
-		List<String> newShorts = getAllShorts(oldShorts);
-		
+		List<Option> newOps = getAllOptions();
+		List<String> newShorts = getAllShorts();
 
 		//Storing
 		for (int k = 0; k < newOps.size(); k++) {
-			
 			if (newShorts.size() > k) {
 				optionMap.store(newOps.get(k), newShorts.get(k));
 				System.out.println(newOps.get(k).getName() + " " + newOps.get(k).getType() + " " + newOps.get(k).getValue() + " " + newShorts.get(k));
@@ -321,10 +334,10 @@ public class Task3_Parser {
     		throw new IllegalArgumentException("Illegal argument provided in method. Null values cannot be passed.");
     	} 
 
-		String[] oldOps = options.split("\\s+");
-		String[] oldTypes = types.split("\\s+");
+		oldOps = Arrays.asList(options.split("\\s+"));
+		oldTypes = Arrays.asList(types.split("\\s+"));
 		
-		List<Option> newOps = getAllOptions(oldOps, oldTypes);
+		List<Option> newOps = getAllOptions();
 		
 		//Storing
 		for (int k = 0; k < newOps.size(); k++) {
@@ -333,47 +346,102 @@ public class Task3_Parser {
 		}
 	}
 	
-	private List<Option> getAllOptions(String[] oldOps, String[] oldTypes){
+	private List<Option> getAllOptions(){
 		List<Option> newOps = new ArrayList<Option>();
 		
 		int typeIndex = 0;
-
-		for (int i = 0; i < oldOps.length; ++i) {
+		int lenOps = oldOps.size();
+		int i = 0;
+		
+		while (i < lenOps) {
+			System.out.println(i);
 			
-			if (i < oldTypes.length) {
+			if (i < oldTypes.size()) {
 				typeIndex = i;
 			}
 			
-			Type type = stringToType(oldTypes[typeIndex]);
+			Type type = stringToType(oldTypes.get(typeIndex));
 			
-			if (oldOps[i].contains("-")) {
-				if (isValidForm(oldOps[i])) {
-					for (String op : ungroup(oldOps[i])) {
+			if (oldOps.get(i).contains("-")) {
+				if (isValidGroup(oldOps.get(i))) {
+					for (String op : ungroup(oldOps.get(i))) {
 					    newOps.add(new Option(op, type));
+					    i++;
 					}
+				} else {
+					if (i < oldShorts.size() && oldShorts!=null) {
+						System.out.println(oldShorts.get(i));
+						oldShorts.remove(i);
+					}
+					if (i < typeIndex) {
+						oldTypes.remove(i);
+					}
+					lenOps--;
 				}
 			} else {
-				newOps.add(new Option(oldOps[i], type));
+				if (isValidSingle(oldOps.get(i))) {
+					newOps.add(new Option(oldOps.get(i), type));
+					i++;
+				} else {
+					if (i < oldShorts.size() && oldShorts!=null) {
+						oldShorts.remove(i);
+					}
+					if (i < typeIndex) {
+						oldTypes.remove(i);
+					}
+					lenOps--;
+				}
+			}
+			
+		}
+		
+		/**
+		for (int i = 0; i < oldOps.size(); ++i) {
+			
+			if (i < oldTypes.size()) {
+				typeIndex = i;
+			}
+			
+			Type type = stringToType(oldTypes.get(typeIndex));
+			
+			if (oldOps.get(i).contains("-")) {
+				if (isValidGroup(oldOps.get(i))) {
+					for (String op : ungroup(oldOps.get(i))) {
+					    newOps.add(new Option(op, type));
+					}
+				} else {
+					oldShorts.remove(i);
+					oldTypes.remove(i);
+				}
+			} else {
+				if (isValidSingle(oldOps.get(i))) {
+					newOps.add(new Option(oldOps.get(i), type));
+				} else {
+					oldShorts.remove(i);
+					oldTypes.remove(i);
+				}
 				
 			}
-		}
+		}**/
 		
 		return newOps;
 	}
 	
-	private List<String> getAllShorts(String[] oldShorts){
+	private List<String> getAllShorts(){
 		List<String> newShorts = new ArrayList<String>();
 		
-		for (int i = 0; i < oldShorts.length; i++) {
+		for (int i = 0; i < oldShorts.size(); i++) {
 			
-			if (oldShorts[i].contains("-")) {
-				if (isValidForm(oldShorts[i])) {
-					for (String sc : ungroup(oldShorts[i])) {
+			if (oldShorts.get(i).contains("-")) {
+				if (isValidGroup(oldShorts.get(i))) {
+					for (String sc : ungroup(oldShorts.get(i))) {
 					    newShorts.add(sc);
 					}
 				}
 			} else {
-				newShorts.add(oldShorts[i]);
+				if (isValidSingle(oldShorts.get(i))) {
+					newShorts.add(oldShorts.get(i));
+				}
 			}
 		}
 		
@@ -410,6 +478,29 @@ public class Task3_Parser {
 		}
 		
 		return single;
+	}
+	
+	private int ungroupInvalid(String group) {
+		int len = 0;
+		
+		String[] arr = group.split("-");
+		int nameLen = arr[0].length()-1;
+		
+		if (isNumeric(arr[1])) {
+			int start = Integer.parseInt(arr[0].substring(nameLen, nameLen+1));
+			int end = Integer.parseInt(arr[1]);
+			
+			len = Math.max(start, end) - Math.min(start, end);
+			
+		} else {
+			char start = arr[0].charAt(nameLen);
+			char end = arr[1].charAt(0);
+			
+			len = Math.max(start, end) - Math.min(start, end);
+			
+		}
+		
+		return len;
 	}
 	
 }

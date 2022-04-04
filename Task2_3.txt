@@ -1,0 +1,3 @@
+I removed tests that tested the same branch. 
+
+I removed any tests which overlapped with other tests as a function being tested is also used in another test.

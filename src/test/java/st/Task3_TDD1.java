@@ -50,7 +50,7 @@ public class Task3_TDD1 {
 		assertEquals(parser.getInteger("o2"), 0);
 	}
 	
-	@Test (expected=IllegalArgumentException.class)
+	@Test
 	public void testStartsWithDigit() {
 		parser.addAll("1opt1 opt1", "o1 o2", "String Integer");
 		assertTrue(parser.optionExists("opt1"));

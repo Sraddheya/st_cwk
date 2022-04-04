@@ -122,27 +122,32 @@ private Task3_Parser parser;
 	public void testInvalidType() {
 		parser.addAll("opt1", "o", "abc");
 	}
-
 	
-	///////////////////////////////////////////////////////////////////////////////////////////////////////
-	/**@Test
-	public void groupInitInvalidGroupTest3() {
-		parser.addAll("2P1-3 oA-F", "Integer Integer");
-		parser.parse("--oA=12");
-		parser.parse("--oE=56");
-		
-		assertEquals(parser.getInteger("oA"), 12);
-		assertEquals(parser.getInteger("oE"), 56);
+	@Test
+	public void testInvalidGroup1() {
+		parser.addAll("oA-AB", "String");
+		assertFalse(parser.optionExists("oA"));
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void testInvalidGroup2() {
+		parser.addAll("1oA-B", "String");
+		assertFalse(parser.optionExists("1oA"));
 	}
 	
 	@Test
-	public void groupInitInvalidShortcutGroupTest() {
-		parser.addAll("2P1-3 oA-F", "2op option&* ","Integer Integer");
-		parser.parse("--oA=12");
-		parser.parse("--oE=56");
-		
-		assertEquals(parser.getInteger("oA"), 12);
-		assertEquals(parser.getInteger("oE"), 56);
-	}**/
+	public void testInvalidGroup3() {
+		parser.addAll("o*A-B", "String");
+		assertFalse(parser.optionExists("o*A"));
+	}
+	
+	@Test
+	public void testInvalidGroup4() {
+		parser.addAll("opt*A-B opt", "oA-B o", "String");
+		assertFalse(parser.optionExists("o*A"));
+		assertTrue(parser.optionExists("o"));
+		parser.parse("-o=test");
+		assertEquals(parser.getString("opt"), "test");
+	}
 	
 }
