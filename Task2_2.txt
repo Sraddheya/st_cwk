@@ -1,2 +1,1 @@
-
-For line 61 in Parser.java, the default case for getInteger() can only be reached when the option is decalred with a type of NOTYPE, however this is not possible because am IllegalArgumentException is immediately thrown when decalring such an option.
+For line 61 in Parser.java, the default case for getInteger can only be reached when the option is declared with a type of NOTYPE, however this is not possible because an IllegalArgumentException is immediately thrown when declaring such an option. Therefore this branch could not be reached and tested.

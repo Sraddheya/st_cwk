@@ -201,6 +201,7 @@ private OptionMap oMap;
 		parser.addOption(new Option("option", Type.STRING), "opt");
 		assertTrue(parser.optionOrShortcutExists("option"));
 		assertTrue(parser.optionOrShortcutExists("opt"));
+		assertFalse(parser.optionOrShortcutExists("ooooo"));
 	}
 	
 	@Test
