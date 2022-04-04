@@ -7,13 +7,13 @@ import org.junit.Test;
 
 public class Task3_TDD1 {
 	
-	private Parser parser;
+	private Task3_Parser parser;
 	
 	@Before
 	public void setUp() {
-		parser = new Parser();
+		parser = new Task3_Parser();
 	}
-/**
+
 	//AddAll SPEC 1 AND 4 PASS-------------------------------------------------------------------------------------------
 	@Test
 	public void testOptionExists() {
@@ -407,5 +407,4 @@ public class Task3_TDD1 {
 	public void testInvalidType() {
 		parser.addAll("opt1-3", "o1-3", "NoType");
 	}
-	**/
 }

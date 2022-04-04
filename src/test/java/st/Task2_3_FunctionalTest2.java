@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-public class Task2_2_FunctionalTest {
+public class Task2_3_FunctionalTest2 {
 	
 private Parser parser;
 private OptionMap oMap;
@@ -17,11 +17,12 @@ private OptionMap oMap;
 	}
 	
 	//[Bug #1 - Easy, 1PT]----------------------------------------------------------------------
+	/**
 	@Test
 	public void testNullShortcut() {
 		parser.addOption(new Option("option", Type.STRING), "");
 		assertFalse(parser.shortcutExists(""));
-	}
+	}**/
 	
 	//[Bug #2 - Easy, 1PT]--------------------------------------------------------------------
 	@Test 
@@ -33,6 +34,7 @@ private OptionMap oMap;
 		assertFalse(parser.getBoolean("option"));
 	}
 	
+	/**
 	@Test 
 	public void testBooleanFalse2() {
 		parser.addOption(new Option("option", Type.BOOLEAN));
@@ -47,7 +49,7 @@ private OptionMap oMap;
 		assertFalse(parser.getBoolean("option"));
 		parser.parse("-o=");
 		assertFalse(parser.getBoolean("option"));
-	}
+	}**/
 
 	//[Bug #3 - Medium, 2PTS] ----------------------------------------------------------------------
 	@Test
@@ -57,35 +59,39 @@ private OptionMap oMap;
 		assertEquals(parser.getInteger("option"), 1);
 	}
 	
+	/**
 	@Test
 	public void testGetInteger2() {
 		parser.addOption(new Option("option", Type.BOOLEAN));
 		parser.parse("--option=false");
 		assertEquals(parser.getInteger("option"), 0);
-	}
+	}**/
 	
 	//[Bug #4 - Medium, 2PTS]-----------------------------------------------------------------------
+	/**
 	@Test
 	public void testShortcutLength() {
 		parser.addOption(new Option("option", Type.STRING), "oooooooooooooooooooooooooooooooooooooooooooooooooooo");
 		assertTrue(parser.shortcutExists("oooooooooooooooooooooooooooooooooooooooooooooooooooo"));
-	}
+	}**/
 	
 	//[Bug #5 - Medium, 2PTS]-----------------------------------------------------------------------
+	/**
 	@Test //(expected=ArithmeticException.class)
 	public void testNegativeInteger() {
 		parser.addOption(new Option("option", Type.INTEGER));
 		parser.parse("--option=-1");
 		assertEquals(parser.getInteger("option"), -1);
-	}
+	}**/
 	
 	//[Bug #6 - Easy, 1PT]-----------------------------------------------------------------------
+	/**
 	@Test 
 	public void testEqualOptions() {
 		Option opt1 = new Option("opt1", Type.STRING);
 		Option opt2 = new Option("opt2", Type.STRING);
 		assertFalse(opt1.equals(opt2));
-	}
+	}**/
 		
 	//Bug #7 - Hard, 3PTS]-------------------------------------------------------------------------
 	@Test 
@@ -96,6 +102,7 @@ private OptionMap oMap;
 	}
 	
 	//[Bug #8 - Medium, 2PTS]-----------------------------------------------------------------------
+	
 	@Test
 	public void testNewShortcut() {
 		parser.addOption(new Option("option", Type.INTEGER), "o");
@@ -105,17 +112,19 @@ private OptionMap oMap;
 	}
 	
 	//[Bug #9 - Easy, 1PT]--------------------------------------------------------------------------
+	/**
 	@Test
 	public void testBlankSpaceParse() {
 		assertEquals(parser.parse(" "), 0);
-	}
+	}**/
 	
 	//[Bug #10 - Easy, 1PT]-------------------------------------------------------------------------
+	/**
 	@Test
 	public void testNoChar() {
 		parser.addOption(new Option("option", Type.CHARACTER));
 		assertEquals(parser.getCharacter("option"), '\0');
-	}
+	}**/
 	
 	//[Bug #11 - Hard, 3PTS]------------------------------------------------------------------------
 	@Test (expected=IllegalArgumentException.class)
@@ -141,12 +150,13 @@ private OptionMap oMap;
 	}
 	
 	//[Bug #14 -  Hard, 3PTS]------------------------------------------------------------------------
+	/**
 	@Test
 	public void testNewLineChar() {
 		parser.addOption(new Option("option", Type.STRING));
 		parser.parse("--option=\\n");
 		assertEquals(parser.getString("option"), "\\n");
-	}
+	}**/
 	
 	//[Bug #15 - Medium, 2PTS]-----------------------------------------------------------------------
 	@Test
@@ -157,10 +167,11 @@ private OptionMap oMap;
 	}
 	
 	//[Bug #16 - Medium, 2PTS]-----------------------------------------------------------------------
+	/**
 	@Test (expected=NullPointerException.class)
 	public void testNullParse() {
 		parser.getString(null);
-	}
+	}**/
 	
 	//[Bug #17 - Hard, 3PTS]-------------------------------------------------------------------------
 	@Test
@@ -203,6 +214,7 @@ private OptionMap oMap;
 		assertTrue(parser.optionOrShortcutExists("opt"));
 	}
 	
+	
 	@Test
 	public void testGetIntegerFromCharacter() {
 		parser.addOption(new Option("option", Type.CHARACTER));
@@ -239,7 +251,7 @@ private OptionMap oMap;
 		assertNotEquals(parser.getString("opt1"), "OldText1");
 		assertNotEquals(parser.getString("opt2"), "OldText2");
 	}
-	
+	/**
 	@Test
 	public void testReplace2() {
 		parser.addOption(new Option("opt1", Type.STRING), "o1");
@@ -282,7 +294,7 @@ private OptionMap oMap;
 		parser.replace("-o1 -o2", "Old", "New");
 		assertNotEquals(parser.getString("opt1"), "OldText1");
 		assertNotEquals(parser.getString("opt2"), "OldText2");
-	}
+	}**/
 	
 	@Test
 	public void testParse1() {
@@ -314,7 +326,7 @@ private OptionMap oMap;
 		parser.parse("--option='test'");
 		assertEquals(parser.getString("option"), "test");
 	}
-	
+	/**
 	@Test 
 	public void testDoubleQuotes() {
 		parser.addOption(new Option("option", Type.STRING));
@@ -334,7 +346,7 @@ private OptionMap oMap;
 		parser.addOption(new Option("option", Type.STRING));
 		parser.parse("--option=\"test'");
 		assertNotEquals(parser.getString("option"), "test");
-	}
+	}**/
 	
 	//OPTION CLASS----------------------------------------------------------------
 	@Test
@@ -345,13 +357,15 @@ private OptionMap oMap;
 		assertEquals(op.getName(), "opNew");
 	}
 	
+	/**
 	@Test
 	public void testToString() {
 		Option op = new Option("op", Type.STRING);
 		String output = "Option[name:op, value:, type:STRING]";
 		assertEquals(op.toString(), output);
-	}
+	}**/
 	
+	/**
 	@Test 
 	public void testOptionsEqual1() {
 		Option opt1 = new Option("opt1", Type.STRING);
@@ -363,7 +377,7 @@ private OptionMap oMap;
 		Option optStr = new Option("opt", Type.STRING);
 		Option optInt = new Option("opt", Type.INTEGER);
 		assertFalse(optStr.equals(optInt));
-	}
+	}**/
 	
 	@Test 
 	public void testOptionsEqual3() {
@@ -372,12 +386,13 @@ private OptionMap oMap;
 		assertFalse(opt1.equals(opt2));
 	}
 	
+	/**
 	@Test 
 	public void testOptionsEqual4() {
 		Option opt1 = new Option("opt1", Type.STRING);
 		Option opt2 = new Option("opt2", Type.STRING);
 		assertFalse(opt1.equals(opt2));
-	}
+	}**/
 	
 	//OPTIONMAP-------------------------------------------------------------------
 	@Test (expected=RuntimeException.class)
@@ -390,6 +405,7 @@ private OptionMap oMap;
 		oMap.getOption("option");
 	}
 	
+	/**
 	@Test
 	public void testGetOption2() {
 		Option option = new Option("op1", Type.STRING);
@@ -402,7 +418,7 @@ private OptionMap oMap;
 		Option option = new Option("option", Type.STRING);
 		oMap.store(option, "op1");
 		assertEquals(oMap.getOptionByNameOrShortcut("-op1"), option);
-	}
+	}**/
 	
 	@Test
 	public void testGetOption4() {
@@ -411,18 +427,21 @@ private OptionMap oMap;
 		assertEquals(oMap.getOptionByNameOrShortcut("op1"), option);
 	}
 	
+	/**
 	@Test (expected=RuntimeException.class)
 	public void testGetOption5() {
 		oMap.getOptionByNameOrShortcut("op1");
-	}
+	}**/
 	
+	/**
 	@Test
 	public void testToStringOptionMap() {
 		Option option = new Option("opt1", Type.STRING);
 		oMap.store(option, "o1");
 		String output = "Options Map: \n{opt1=Option[name:opt1, value:, type:STRING]}\nShortcuts Map:\n{o1=Option[name:opt1, value:, type:STRING]}";
 		assertEquals(oMap.toString(), output);
-	}
+	}**/
+	
 	
 	@Test (expected=IllegalArgumentException.class)
 	public void testIsOptionValid1() {
@@ -441,7 +460,7 @@ private OptionMap oMap;
 		Option option = new Option("opt", Type.STRING);
 		oMap.store(option, null);
 	}
-	
+	/**
 	@Test (expected=IllegalArgumentException.class)
 	public void testIsOptionValid4() {
 		Option option = new Option("opt", Type.NOTYPE);
@@ -464,28 +483,30 @@ private OptionMap oMap;
 	public void testIsOptionValid7() {
 		Option option = new Option("opt", Type.STRING);
 		oMap.store(option, "1o");
-	}
+	}**/
 	
 	@Test
-	public void testStoreoption() {
+	public void testStoreOption() {
 		Option option = new Option("opt", Type.STRING);
 		oMap.store(option, "");
 		oMap.store(option, "o");
 	}
 	
+	/**
 	@Test
 	public void testShortcutOrOptionExists1() {
 		Option option = new Option("opt", Type.STRING);
 		oMap.store(option, "o");
 		assertTrue(oMap.optionOrShortcutExists("opt"));
 		assertTrue(oMap.optionOrShortcutExists("o"));
-	}
+	}**/
 	
 	@Test
 	public void testShortcutOrOptionExists2() {
 		assertFalse(oMap.optionOrShortcutExists("option"));
 	}
 	
+	/**
 	@Test
 	public void testSetShortcut1() {
 		Option option = new Option("opt", Type.STRING);
@@ -497,8 +518,9 @@ private OptionMap oMap;
 	@Test
 	public void testSetShortcut2() {
 		oMap.setShortcut("opt", "o");
-	}
+	}**/
 	
+	/**
 	@Test
 	public void testSetValueWithOptionName1() {
 		Option option = new Option("opt", Type.STRING);
@@ -510,8 +532,9 @@ private OptionMap oMap;
 	@Test
 	public void testValueWithOptionName2() {
 		oMap.setValueWithOptionName("opt", "test");
-	}
+	}**/
 	
+	/**
 	@Test
 	public void testsetValueWithOptionShortcut1() {
 		Option option = new Option("opt", Type.STRING);
@@ -523,5 +546,5 @@ private OptionMap oMap;
 	@Test
 	public void testsetValueWithOptionShortcut2() {
 		oMap.setValueWithOptionShortcut("opt", "test");
-	}
+	}**/
 }

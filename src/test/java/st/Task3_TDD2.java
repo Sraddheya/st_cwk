@@ -7,14 +7,13 @@ import org.junit.Test;
 
 public class Task3_TDD2 {
 	
-	private Parser parser;
+private Task3_Parser parser;
 	
 	@Before
 	public void setUp() {
-		parser = new Parser();
+		parser = new Task3_Parser();
 	}
 	
-	/**
 	@Test (expected = IllegalArgumentException.class)
 	public void testNullValues1() {
 		parser.addAll("opt", null, null);
@@ -27,12 +26,12 @@ public class Task3_TDD2 {
 	
 	@Test (expected = IllegalArgumentException.class)
 	public void testNullValues3() {
-		parser.addAll(null, "o", String);
+		parser.addAll(null, "o", "String");
 	}
 	
 	@Test (expected = IllegalArgumentException.class)
 	public void testNullValues4() {
-		parser.addAll(null, String);
+		parser.addAll(null, "String");
 	}
 	
 	@Test (expected = IllegalArgumentException.class)
@@ -123,8 +122,7 @@ public class Task3_TDD2 {
 	public void testInvalidType() {
 		parser.addAll("opt1", "o", "abc");
 	}
-	
-	**/
+
 	
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
 	/**@Test
