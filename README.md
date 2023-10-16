@@ -1,6 +1,6 @@
 # Software Testing Cwk1
 
-This course me provided with a broad overview of software testing techniques proven valuable across application domains. The goal of the course was to provide students with the skill to select and apply testing strategies and testing techniques that are appropriate to a particular software system or component. In addition I learnt how to use different test tools; assess the effectiveness of their testing activity; and provided evidence to justify their evaluation. 
+This course provided me with a broad overview of software testing techniques proven valuable across application domains. The goal of the course was to provide students with the skill to select and apply testing strategies and testing techniques that are appropriate to a particular software system or component. In addition I learnt how to use different test tools; assess the effectiveness of their testing activity; and provided evidence to justify their evaluation. 
 
 Learning Outcomes
 1. Analyze requirements to determine appropriate testing strategies
